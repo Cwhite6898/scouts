@@ -1,0 +1,946 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#E9EDE3;
+    --paper-2:#F3F6EE;
+    --ink:#12291F;
+    --pine:#1E4235;
+    --moss:#5A8A6B;
+    --moss-soft:#CBDBCF;
+    --blaze:#C8452E;
+    --gold:#E5A93B;
+    --rule:rgba(18,41,31,.14);
+    --disp:"Barlow Condensed",'Arial Narrow',sans-serif;
+    --body:"Barlow",system-ui,-apple-system,sans-serif;
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+  body{
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background-color:var(--paper);
+    /* topographic contour lines — the field-guide signature */
+    background-image:
+      repeating-radial-gradient(ellipse 620px 420px at 12% 8%,
+        transparent 0 26px, rgba(30,66,53,.055) 26px 27px),
+      repeating-radial-gradient(ellipse 520px 700px at 92% 74%,
+        transparent 0 30px, rgba(30,66,53,.045) 30px 31px);
+    background-attachment:fixed;
+    padding-bottom:80px;
+  }
+
+  .wrap{max-width:660px;margin:0 auto;padding:0 14px;}
+
+  /* ---------- header ---------- */
+  header{
+    background:var(--pine);
+    color:var(--paper-2);
+    padding:22px 0 18px;
+    margin-bottom:16px;
+    border-bottom:3px solid var(--gold);
+  }
+  .eyebrow{
+    font-family:var(--disp);
+    font-size:13px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 2px;
+  }
+  h1{
+    font-family:var(--disp);
+    font-size:40px;line-height:.95;margin:0;
+    font-weight:700;letter-spacing:.01em;text-transform:uppercase;
+  }
+  .sub{font-size:13px;opacity:.78;margin-top:7px;}
+
+  /* ---------- hi-sierra banner ---------- */
+  .hi-sierra{
+    margin-top:16px;padding:15px 15px 13px;
+    border-radius:12px;
+    background:linear-gradient(160deg, rgba(229,169,59,.16), rgba(229,169,59,.04));
+    border:1px solid rgba(229,169,59,.42);
+  }
+  .hs-eyebrow{
+    font-family:var(--disp);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 4px;font-weight:600;
+  }
+  .hs-lead{
+    font-family:var(--disp);font-size:25px;line-height:1.05;font-weight:700;
+    margin:0 0 11px;color:var(--paper-2);letter-spacing:.01em;
+  }
+  .hs-badges{list-style:none;margin:0 0 11px;padding:0;display:flex;flex-wrap:wrap;gap:6px;}
+  .hs-badges li{
+    font-size:12.5px;font-weight:500;
+    background:rgba(233,237,227,.13);
+    border:1px solid rgba(233,237,227,.2);
+    padding:4px 9px;border-radius:20px;color:var(--paper-2);
+  }
+  .hs-badges .hs-star{
+    background:var(--gold);border-color:var(--gold);color:#3A2A05;font-weight:600;
+  }
+  .hs-badges .hs-star span{
+    font-family:var(--disp);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    opacity:.72;margin-left:3px;
+  }
+  .hs-kicker{
+    font-size:13.5px;line-height:1.55;margin:0;color:rgba(233,237,227,.9);
+  }
+  .hs-kicker b{color:var(--gold);}
+  .hs-flag{
+    font-size:12.5px;line-height:1.5;margin:10px 0 0;padding-top:10px;
+    border-top:1px solid rgba(229,169,59,.28);
+    color:rgba(233,237,227,.82);
+  }
+  .hs-flag b{color:var(--gold);}
+
+  /* ---------- progress ---------- */
+  .prog{display:flex;align-items:center;gap:16px;margin-top:18px;}
+  .ring{flex:0 0 auto;}
+  .ring-num{
+    font-family:var(--disp);font-size:23px;font-weight:700;
+    fill:var(--paper-2);
+  }
+  .ring-lab{font-family:var(--disp);font-size:9px;letter-spacing:.13em;fill:var(--gold);}
+  .prog-txt{font-size:13.5px;line-height:1.45;}
+  .prog-txt b{font-family:var(--disp);font-size:19px;letter-spacing:.02em;}
+
+  /* ---------- cards ---------- */
+  .card{
+    background:var(--paper-2);
+    border:1px solid var(--rule);
+    border-radius:12px;
+    padding:15px 15px 6px;
+    margin-bottom:14px;
+  }
+  .card h2{
+    font-family:var(--disp);
+    font-size:18px;letter-spacing:.13em;text-transform:uppercase;
+    margin:0 0 4px;color:var(--pine);
+  }
+  .hint{font-size:12.5px;color:#5D6E63;margin:0 0 12px;line-height:1.5;}
+
+  /* ---------- outings ---------- */
+  .card-top{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;}
+  .card-top h2{margin:0;}
+  .card-sum{
+    margin-left:auto;font-family:var(--disp);font-size:13px;letter-spacing:.06em;
+    color:#7A8B80;text-transform:uppercase;white-space:nowrap;
+  }
+
+  /* progress bars */
+  .bar{margin-bottom:13px;}
+  .bar:last-child{margin-bottom:4px;}
+  .bar-top{display:flex;align-items:baseline;gap:6px;margin-bottom:5px;}
+  .bar-lab{font-size:13.5px;font-weight:500;}
+  .bar-lab small{color:#7A8B80;font-weight:400;font-size:12px;}
+  .bar-val{
+    margin-left:auto;font-family:var(--disp);font-size:15px;font-weight:700;
+    letter-spacing:.02em;white-space:nowrap;
+  }
+  .bar-val.met{color:var(--moss);}
+  .bar-val.short{color:var(--blaze);}
+  .track{height:8px;border-radius:5px;background:var(--moss-soft);overflow:hidden;}
+  .fill{height:100%;border-radius:5px;background:var(--moss);transition:width .5s ease;}
+  .fill.short{background:var(--gold);}
+  .fill.over{background:var(--pine);}
+  .bar-note{font-size:11.5px;color:#7A8B80;margin-top:4px;line-height:1.4;}
+
+  .ghost-btn{
+    width:100%;margin-top:12px;padding:10px;
+    border:1px solid var(--rule);border-radius:8px;background:none;
+    font-family:var(--disp);font-size:13px;letter-spacing:.11em;
+    text-transform:uppercase;font-weight:600;color:var(--pine);cursor:pointer;
+  }
+  .ghost-btn:active{background:var(--moss-soft);}
+
+  /* master log */
+  #outingList{margin-top:12px;}
+  .outing{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:10px 2px;border-top:1px solid var(--rule);
+    background:none;border-left:0;border-right:0;border-bottom:0;
+    font:inherit;color:inherit;cursor:pointer;
+  }
+  .outing:active{background:var(--moss-soft);}
+  .nights{
+    flex:0 0 auto;width:34px;height:34px;border-radius:8px;
+    background:var(--pine);color:var(--paper-2);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:var(--disp);line-height:1;
+  }
+  .nights b{font-size:15px;font-weight:700;}
+  .nights span{font-size:8px;letter-spacing:.08em;opacity:.7;}
+  .nights.day{background:var(--moss-soft);color:var(--pine);}
+  .nights.long{background:var(--gold);color:#3A2A05;}
+  .outing-body{flex:1;min-width:0;}
+  .outing-name{font-size:14px;font-weight:500;line-height:1.35;}
+  .outing-meta{font-size:11.5px;color:#7A8B80;margin-top:2px;}
+  .outing.planned{opacity:.55;}
+  .chev{flex:0 0 auto;color:#B4C0B8;font-size:15px;}
+
+  .add-btn{
+    width:100%;margin:12px 0 0;padding:12px;
+    border:1px dashed var(--moss);border-radius:9px;
+    background:none;color:var(--pine);cursor:pointer;
+    font-family:var(--disp);font-size:14px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:600;
+  }
+  .add-btn:active{background:var(--moss-soft);}
+
+  .add-form{
+    background:var(--paper);border:1px solid var(--rule);
+    border-radius:10px;padding:12px;margin-top:12px;
+  }
+  .add-form input{
+    width:100%;padding:11px 10px;margin-bottom:8px;
+    border:1px solid var(--rule);border-radius:8px;
+    background:var(--paper-2);font:inherit;font-size:15px;color:var(--ink);
+  }
+  .add-form input:focus{outline:2px solid var(--moss);outline-offset:1px;}
+  .night-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:6px 2px 10px;
+  }
+  .night-lab{font-size:14px;font-weight:500;}
+  .stepper{display:flex;align-items:center;gap:5px;}
+  .stepper button{
+    width:38px;height:38px;border-radius:9px;
+    border:1px solid var(--rule);background:var(--paper-2);
+    font-size:20px;font-weight:600;color:var(--pine);cursor:pointer;line-height:1;
+  }
+  .stepper button:active{background:var(--moss-soft);}
+  .night-n{
+    font-family:var(--disp);font-size:19px;font-weight:700;
+    min-width:34px;text-align:center;
+  }
+  .toggles{display:flex;gap:8px;}
+  .toggle{
+    flex:1;padding:11px 6px;border-radius:8px;
+    border:1px solid var(--rule);background:var(--paper-2);
+    font-family:var(--disp);font-size:13px;letter-spacing:.06em;
+    text-transform:uppercase;font-weight:600;color:#7A8B80;cursor:pointer;
+  }
+  .toggle[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:#fff;}
+  #oPlanned[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#3A2A05;}
+  .form-actions{display:flex;gap:8px;margin-top:10px;}
+  .btn-ghost,.btn-solid,.btn-del{
+    padding:12px;border-radius:8px;cursor:pointer;
+    font-family:var(--disp);font-size:14px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:600;
+  }
+  .btn-ghost{flex:1;background:none;border:1px solid var(--rule);color:#7A8B80;}
+  .btn-solid{flex:1;background:var(--pine);border:1px solid var(--pine);color:var(--paper-2);}
+  .btn-del{flex:0 0 auto;background:none;border:1px solid var(--blaze);color:var(--blaze);}
+
+  /* ---------- filter ---------- */
+  .filters{display:flex;gap:7px;margin-bottom:14px;}
+  .filters button{
+    flex:1;padding:10px 4px;border-radius:9px;
+    border:1px solid var(--rule);background:var(--paper-2);
+    font-family:var(--disp);font-size:14px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--pine);cursor:pointer;font-weight:600;
+  }
+  .filters button b{
+    font-weight:700;opacity:.5;margin-left:2px;
+  }
+  .filters button[aria-pressed="true"] b{opacity:.85;}
+  .filters button[aria-pressed="true"]{
+    background:var(--pine);color:var(--paper-2);border-color:var(--pine);
+  }
+  .filters button[data-f="ready"]{color:#8A6A18;border-color:rgba(229,169,59,.55);}
+  .filters button[data-f="ready"][aria-pressed="true"]{
+    background:var(--gold);border-color:var(--gold);color:#3A2A05;
+  }
+  .filters{gap:5px;}
+  .filters button{padding:10px 2px;font-size:13px;letter-spacing:.05em;}
+
+  /* ---------- trail sections ---------- */
+  .cat{margin-bottom:22px;}
+  .cat-head{
+    display:flex;align-items:baseline;gap:9px;
+    padding:0 2px 8px;
+  }
+  .cat-head h3{
+    font-family:var(--disp);font-size:17px;letter-spacing:.13em;
+    text-transform:uppercase;margin:0;color:var(--pine);
+  }
+  .cat-count{
+    font-family:var(--disp);font-size:13px;letter-spacing:.05em;
+    color:#7A8B80;margin-left:auto;white-space:nowrap;
+  }
+
+  /* the trail spine */
+  .trail{position:relative;padding-left:34px;}
+  .trail::before{
+    content:"";position:absolute;left:12px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom,
+      var(--moss-soft) 0 7px, transparent 7px 13px);
+  }
+
+  .req{
+    position:relative;
+    display:block;width:100%;text-align:left;
+    background:var(--paper-2);
+    border:1px solid var(--rule);
+    border-radius:11px;
+    padding:13px 13px 13px 14px;
+    margin-bottom:9px;
+    cursor:pointer;font:inherit;color:inherit;
+    transition:background .16s, border-color .16s, opacity .16s;
+  }
+  .req:active{background:var(--moss-soft);}
+
+  /* blaze marker on the trail */
+  .blaze{
+    position:absolute;left:-29px;top:16px;
+    width:19px;height:19px;border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--moss-soft);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s, border-color .2s, transform .2s;
+  }
+  .blaze svg{width:11px;height:11px;opacity:0;transform:scale(.4);transition:opacity .2s, transform .2s;}
+
+  /* state 1: done, but nobody has signed it */
+  .req.ready{background:#FBF3E1;border-color:var(--gold);border-style:dashed;}
+  .req.ready .blaze{background:var(--gold);border-color:var(--gold);}
+  .req.ready .blaze svg{opacity:1;transform:scale(1);stroke:#3A2A05;}
+  .req.ready .req-num{background:var(--gold);color:#3A2A05;border-color:var(--gold);}
+  .tag.ready{background:var(--gold);color:#3A2A05;}
+  .cat-count em{color:var(--gold);font-style:normal;font-weight:700;}
+  .legend{
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+    font-size:11.5px;color:#7A8B80;margin-bottom:14px;
+  }
+  .legend span{display:flex;align-items:center;gap:5px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .dot.n{border:2px solid var(--moss-soft);}
+  .dot.r{background:var(--gold);}
+  .dot.d{background:var(--moss);}
+
+  .req.linked{cursor:default;}
+  .req.linked:active{background:var(--paper-2);}
+  .tag.linked{background:var(--moss-soft);color:var(--pine);}
+
+  .req.done{background:#DFE9E0;border-color:var(--moss);}
+  .req.done .blaze{background:var(--moss);border-color:var(--moss);transform:scale(1.08);}
+  .req.done .blaze svg{opacity:1;transform:scale(1);}
+  .req.done .req-txt{opacity:.6;}
+  .req.done .req-num{background:var(--moss);color:#fff;border-color:var(--moss);}
+
+  .req-top{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+  .req-num{
+    font-family:var(--disp);font-size:13px;font-weight:700;letter-spacing:.05em;
+    background:var(--paper);border:1px solid var(--rule);
+    padding:2px 7px;border-radius:5px;color:var(--pine);
+  }
+  .tag{
+    font-family:var(--disp);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 7px;border-radius:4px;font-weight:600;
+  }
+  .tag.kayak{background:#D6E4EC;color:#1F4A63;}
+  .tag.coh{background:#EFE1C4;color:#7A5A16;}
+  .tag.quick{background:var(--gold);color:#3A2A05;}
+  .req-txt{font-size:14px;line-height:1.5;}
+  .req-note{
+    font-size:12.5px;line-height:1.5;color:#5D6E63;
+    margin-top:6px;padding-left:9px;border-left:2px solid var(--gold);
+  }
+
+  /* ---------- footer ---------- */
+  .foot{text-align:center;padding:22px 0 6px;}
+  .foot-row{display:flex;gap:8px;max-width:340px;margin:0 auto 10px;}
+  .ghost-btn.small{margin-top:0;font-size:12px;padding:9px;}
+  .reset{
+    background:none;border:1px solid var(--rule);color:#7A8B80;
+    font-family:var(--disp);font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    padding:9px 18px;border-radius:8px;cursor:pointer;
+  }
+  .saved{
+    font-size:12px;color:var(--moss);height:16px;margin-top:9px;
+    opacity:0;transition:opacity .3s;
+  }
+  .saved.show{opacity:1;}
+
+  .hidden{display:none;}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">Troop 0116 &middot; Scouts BSA</p>
+    <h1>Rosie's Trail<br>to First Class</h1>
+    <p class="sub">Tap a requirement to check it off. It saves automatically.</p>
+
+    <div class="hi-sierra">
+      <p class="hs-eyebrow">Just back from Hi-Sierra</p>
+      <p class="hs-lead">Four merit badges and four hours of service. In one week.</p>
+      <ul class="hs-badges">
+        <li>Wilderness Survival</li>
+        <li>Small-Boat Sailing</li>
+        <li>Wood Carving</li>
+        <li class="hs-star">Sustainability <span>Eagle-required</span></li>
+      </ul>
+      <p class="hs-kicker">That puts you at <b>16 merit badges</b> — more than the 11 a Scout needs for <b>Life</b> rank. You are not behind. You've been out earning badges instead of ticking boxes, and the boxes are the easy part.</p>
+      <p class="hs-flag">Your 4 service hours at camp may have already finished <b>requirement 9d</b> — it only needs 3. Ask your Scoutmaster.</p>
+    </div>
+
+    <div class="prog">
+      <svg class="ring" width="82" height="82" viewBox="0 0 82 82" aria-hidden="true">
+        <circle cx="41" cy="41" r="34" fill="none" stroke="rgba(233,237,227,.2)" stroke-width="7"/>
+        <circle id="ringReady" cx="41" cy="41" r="34" fill="none" stroke="#E5A93B" stroke-width="7"
+                stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                opacity=".42" transform="rotate(-90 41 41)" style="transition:stroke-dashoffset .5s"/>
+        <circle id="ringFill" cx="41" cy="41" r="34" fill="none" stroke="#E5A93B" stroke-width="7"
+                stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                transform="rotate(-90 41 41)" style="transition:stroke-dashoffset .5s"/>
+        <text id="ringNum" class="ring-num" x="41" y="42" text-anchor="middle">0</text>
+        <text class="ring-lab" x="41" y="55" text-anchor="middle">OF 38</text>
+      </svg>
+      <div class="prog-txt">
+        <b id="progHead">38 to go</b><br>
+        <span id="progSub">Every requirement is still open. Start with the easy ones below.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- OUTINGS -->
+  <div class="card">
+    <div class="card-top">
+      <h2>Outings</h2>
+      <span class="card-sum" id="outSum"></span>
+    </div>
+    <div id="bars"></div>
+    <button class="ghost-btn" id="toggleLog">Show all outings</button>
+    <div id="logPanel" class="hidden">
+      <div id="outingList"></div>
+      <button class="add-btn" id="addBtn">+ Add an outing</button>
+      <div class="add-form hidden" id="addForm">
+        <input type="text" id="oName" placeholder="What was it?" autocomplete="off">
+        <input type="text" id="oDate" placeholder="When? (e.g. Oct 2025)" autocomplete="off">
+        <div class="night-row">
+          <span class="night-lab">Nights slept out</span>
+          <div class="stepper">
+            <button type="button" id="nMinus" aria-label="Fewer nights">&minus;</button>
+            <span class="night-n" id="nVal">0</span>
+            <button type="button" id="nPlus" aria-label="More nights">+</button>
+          </div>
+        </div>
+        <div class="toggles">
+          <button type="button" class="toggle" id="oOutdoor" aria-pressed="false">Outdoors</button>
+          <button type="button" class="toggle" id="oPlanned" aria-pressed="false">Hasn't happened yet</button>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-del hidden" id="delBtn">Delete</button>
+          <button type="button" class="btn-ghost" id="oCancel">Cancel</button>
+          <button type="button" class="btn-solid" id="oSave">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <button data-f="all"   aria-pressed="true">All <b>0</b></button>
+    <button data-f="todo"  aria-pressed="false">To do <b>0</b></button>
+    <button data-f="ready" aria-pressed="false">To sign <b>0</b></button>
+    <button data-f="done"  aria-pressed="false">Done <b>0</b></button>
+  </div>
+
+  <p class="legend">
+    <span><i class="dot n"></i>Not started</span>
+    <span><i class="dot r"></i>Needs a signature</span>
+    <span><i class="dot d"></i>Signed off</span>
+  </p>
+
+  <!-- REQUIREMENTS -->
+  <div id="list"></div>
+
+  <div class="foot">
+    <div class="foot-row">
+      <button class="ghost-btn small" id="exportBtn">Save a backup</button>
+      <button class="ghost-btn small" id="importBtn">Load a backup</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" class="hidden">
+    <button class="reset" id="reset">Start over</button>
+    <p class="saved" id="saved">Saved</p>
+  </div>
+</div>
+
+<script>
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+
+const REQS = [
+  ["Camping & Outdoor Ethics", [
+    ["1b","Explain how camping impacts the environment and other outdoor users, and why Leave No Trace matters.","","kayak"],
+  ]],
+  ["Cooking", [
+    ["2a","Plan a campout menu: 1 breakfast, 1 lunch, 1 dinner — at least 2 of them cooked. Show how it meets MyPlate.","You did this for Bear Paw. Heads up: whatever menu gets signed here is the menu you must cook for 2e — so it may be simpler to re-plan for the kayaking trip and chain 2a-2b-2c-2e off one campout.","kayak"],
+    ["2b","Build a budget and food list for that menu, feeding 3+ Scouts. Buy the ingredients.","Your troop runs about $10/Scout for a weekend campout. For 3 Scouts that's a $30 budget — write that number down as the budget, then list ingredients and prices against it.","kayak"],
+    ["2c","Show which pans, utensils, and gear you need to cook and serve it.","","kayak"],
+    ["2d","Safely handle and store meat, dairy, eggs, and vegetables. Dispose of garbage and waste water properly.","You did this at Bear Paw. It's the one cooking requirement that stands on its own — get it signed.","kayak"],
+    ["2e","Be the COOK on a campout. Run your assistants, cook all three meals, run cleanup.","NOT met at Bear Paw — you cooked, but didn't supervise anyone. That's the whole point of this one: Second Class asked you to cook, First Class asks you to RUN the kitchen. Do it at the kayaking trip.","kayak"],
+  ]],
+  ["Tools", [
+    ["3a","Discuss when you should and shouldn't use lashings.","",""],
+    ["3b","Tie a timber hitch and a clove hitch.","",""],
+    ["3c","Tie square, shear, and diagonal lashings joining two or more poles.","",""],
+    ["3d","Use lashings to build a useful camp gadget or structure.","Idea: a portable ballet barre — two poles lashed horizontally between two uprights (or two trees), at the right height to hold onto for pliés and stretches. It's real lashing practice under real load, and it's a genuinely cool build to show off. Doing this can knock out 3a–3c at the same time.","kayak"],
+  ]],
+  ["Navigation", [
+    ["4a","Run a 1-mile orienteering course with map and compass, measuring the height or width of things along the way.","",""],
+    ["4b","Use GPS to find where you are, pick a destination, plan a route, and follow it there.","You already have the Geocaching merit badge — you know this cold.","quick"],
+  ]],
+  ["Nature", [
+    ["5a","Find and identify 10 native plants. Photos count.","Shoot them at the campsite.","kayak"],
+    ["5b","Name two ways to get a weather forecast, and why forecasts matter for planning.","Do it for real before the trip.","kayak"],
+    ["5c","Describe 3 natural warning signs of bad weather, what could go wrong, and what to do.","",""],
+    ["5d","Describe extreme weather where you live, how to judge the risk ahead of time, and how to prepare.","",""],
+  ]],
+  ["Aquatics", [
+    ["6a","Pass the Scouting America SWIMMER test.","You may have already done this. Both your Kayaking and Small-Boat Sailing merit badges require the swimmer test — ask your Scoutmaster to sign it off.","quick"],
+    ["6b","Explain the precautions for a safe trip afloat.","Review it with a leader before you launch.","kayak"],
+    ["6c","Name the parts of a kayak or canoe, and the parts of a paddle.","You have the Kayaking merit badge. This is a five-minute conversation.","quick"],
+    ["6d","Describe how to sit and position your body in a boat, and why it matters.","Same — Kayaking merit badge already covered this.","quick"],
+    ["6e","Do a line rescue, both as the tender and as the rescuer.","Ask if the trip can include rescue practice.","kayak"],
+  ]],
+  ["First Aid & Emergencies", [
+    ["7a","Bandage a sprained ankle, and injuries to the head, upper arm, and collarbone.","You have the First Aid merit badge — this should come back fast.","quick"],
+    ["7b","Carry someone out of a smoke-filled room. Move someone with a sprained ankle 25 yards.","",""],
+    ["7c","Name the 5 common signs of a heart attack. Explain the steps of CPR.","",""],
+    ["7d","Name the utilities in your home, their hazards, and what to do in an emergency.","",""],
+    ["7e","Write an emergency plan for your home: fire, storm, power outage, water outage.","Kitchen-table job. Do it on a rainy afternoon.",""],
+    ["7f","Explain how to get safe drinking water in an emergency.","You have Wilderness Survival — you already know this.","quick"],
+  ]],
+  ["Fitness", [
+    ["8a","30+ minutes of activity a day, 5 days a week, for 4 weeks. Keep track.","Four weeks of calendar time. Start it today, not later.",""],
+    ["8b","Talk about what was hard and what went well. Set a goal to keep moving.","",""],
+  ]],
+  ["Citizenship", [
+    ["9a","Meet with an official — judge, elected official, teacher, principal — and talk about the rights and duties of a citizen.","This one needs scheduling. Ask around at the court of honor.","coh"],
+    ["9b","Look into an environmental issue in your community. Tell your patrol what you found and what could be done.","Your Sustainability merit badge gave you a head start.","quick"],
+    ["9c","Track the trash you make on one outing. On the NEXT outing, cut it down. Compare.","Needs two outings. Start the tracking half on the kayaking trip.","kayak"],
+    ["9d","3 hours of service — different projects from the ones used for Tenderfoot and Second Class.","You did 4 hours at Hi-Sierra. That's more than the 3 you need. As long as it's a different project than your Tenderfoot and Second Class service, this is done — get it signed off.","quick"],
+  ]],
+  ["Leadership", [
+    ["10","Tell someone who could join Scouts BSA about what you do. Invite them to something. Tell your Scoutmaster how it went.","A court of honor is the easiest thing to bring a friend to.","coh"],
+  ]],
+  ["Scout Spirit & Sign-Off", [
+    ["11","Show Scout spirit. Tell how you lived 4 points of the Scout Law — different points than you used for Tenderfoot and Second Class.","Check your old rank sign-offs first so you don't repeat.",""],
+    ["12","Sit down for a Scoutmaster conference.","",""],
+    ["13","Pass your board of review for First Class.","The finish line.",""],
+  ]],
+];
+
+const KEY = "rosie_first_class_v7";
+const TOTAL = REQS.reduce((n,[,items])=>n+items.length,0) + 1;  // +1 for req 1a, tracked live from her outings
+
+// Her real record. `nights` = nights actually slept out. 0 = day activity.
+const SEED = [
+  {id:"c9", name:"Angel Island Bike Camping",        date:"May 18–19, 2024",  nights:1, outdoor:true,  planned:false},
+  {id:"c8", name:"Beach Camping (troop)",            date:"May 31–Jun 2, 2024", nights:2, outdoor:true, planned:false},
+  {id:"c7", name:"Camp Hi-Sierra 2024",              date:"Jul 7–13, 2024",   nights:6, outdoor:true,  planned:false},
+  {id:"c6", name:"Russian River Canoeing & Camping", date:"Aug 16–18, 2024",  nights:2, outdoor:true,  planned:false},
+  {id:"c5", name:"Pinnacles Camping",                date:"Sep 20–22, 2024",  nights:2, outdoor:true,  planned:false},
+  {id:"c4", name:"Fall Backpacking",                 date:"Oct 19–20, 2024",  nights:1, outdoor:true,  planned:false},
+  {id:"c3", name:"Bear Paw Snow Camping",            date:"Feb 21–23, 2025",  nights:2, outdoor:true,  planned:false},
+  {id:"c2", name:"Mt. Madonna Campout",              date:"Apr 25–27, 2025",  nights:2, outdoor:true,  planned:false},
+  {id:"c1", name:"Camp Hi-Sierra 2026",              date:"Jul 5–11, 2026",   nights:6, outdoor:true,  planned:false},
+  {id:"s2", name:"Court of honor",                   date:"Upcoming",         nights:0, outdoor:false, planned:true},
+  {id:"s3", name:"Kayaking trip",                    date:"Upcoming",         nights:2, outdoor:true,  planned:true},
+];
+
+// Requirement state: 0 = not started · 1 = done, waiting on a signature · 2 = signed off.
+// The 1s below are requirements her own records already show evidence for.
+const EVIDENCE = {
+  "4b":1,  // Geocaching MB — GPS navigation
+  "6a":1,  // Kayaking + Small-Boat Sailing MBs both require the swimmer test
+  "6c":1,  // Kayaking MB — parts of a kayak and paddle
+  "6d":1,  // Kayaking MB — body positioning
+  "7a":1,  // First Aid MB — bandaging
+  "7f":1,  // Wilderness Survival MB — potable water
+  "9b":1,  // Sustainability MB — environmental issue
+  "9d":1,  // 4 hours of service at Hi-Sierra (needs 3)
+  "2a":1,  // planned a full menu at Bear Paw (Feb 2025)
+  "2d":1,  // food safety + waste disposal at Bear Paw
+};
+
+let state = {done:Object.assign({},EVIDENCE), outings:SEED.slice(), filter:"all", logOpen:false};
+let editing = null;               // id being edited, or null when adding
+const draft = {nights:0, outdoor:false, planned:false};
+
+const $ = s => document.querySelector(s);
+
+async function load(){
+  try{
+    const r = await window.storage.get(KEY, true);   // shared: tied to the artifact, not the viewer's login
+    if(r && r.value) state = Object.assign(state, JSON.parse(r.value));
+    state.filter = "all";              // never reopen stuck on an empty filter
+  }catch(e){ /* first run */ }
+  render();
+}
+
+// ---- saving ----
+let saveTimer;
+let storageFailed = false;
+async function save(){
+  try{
+    const r = await window.storage.set(KEY, JSON.stringify(state), true);
+    if(!r) throw new Error("no result");
+    storageFailed = false;
+    const s = $("#saved");
+    s.textContent = "Saved";
+    s.classList.add("show");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => s.classList.remove("show"), 1400);
+  }catch(e){
+    storageFailed = true;
+    clearTimeout(saveTimer);
+    const s = $("#saved");
+    s.textContent = "Not saving on this device — tap \u201cSave a backup\u201d below";
+    s.classList.add("show");   // stays visible; this one matters
+  }
+}
+
+const st = id => state.done[id] || 0;
+function req1aState(){
+  const s = stats();  // {activities, outdoor, overnight, ...}
+  return (s.activities >= 10 && s.outdoor >= 6 && s.overnight >= 3) ? 2 : 0;
+}
+function signedCount(){ return Object.values(state.done).filter(v => v === 2).length + (req1aState()===2?1:0); }
+function readyCount(){  return Object.values(state.done).filter(v => v === 1).length; }
+function doneCount(){   return signedCount(); }
+
+function renderProgress(){
+  const signed = signedCount(), ready = readyCount();
+  const C = 213.6;
+  $("#ringFill").setAttribute("stroke-dashoffset", (C * (1 - signed/TOTAL)).toFixed(1));
+  $("#ringReady").setAttribute("stroke-dashoffset", (C * (1 - (signed+ready)/TOTAL)).toFixed(1));
+  $("#ringNum").textContent = signed + ready;
+
+  const left = TOTAL - signed - ready;
+  if(ready > 0){
+    $("#progHead").textContent = ready + " ready to sign off";
+    $("#progSub").innerHTML = `Her records already show she's done these — they just need a Scoutmaster's signature. `
+      + `${left} genuinely left to do.`;
+  } else if(left === 0){
+    $("#progHead").textContent = "All " + TOTAL + " signed off";
+    $("#progSub").textContent = "Go get that board of review scheduled.";
+  } else {
+    $("#progHead").textContent = left + " to go";
+    $("#progSub").textContent = signed + " signed off · " + Math.round(signed/TOTAL*100) + "% of the way there.";
+  }
+}
+
+// ---- the numbers ----
+const LONG = 5;   // 5+ consecutive nights = a long-term camp
+
+function stats(){
+  const real = state.outings.filter(o => !o.planned);
+
+  // First Class 1a
+  const activities = real.length;
+  const outdoor    = real.filter(o => o.outdoor).length;
+  const overnight  = real.filter(o => o.nights > 0).length;
+
+  // Camping MB 9a: every short-term night counts. Of the long-term camps,
+  // the best one counts up to 6 nights; every additional one counts just 2.
+  const shortN = real.filter(o => o.nights > 0 && o.nights < LONG)
+                     .reduce((s,o) => s + o.nights, 0);
+  const longs  = real.filter(o => o.nights >= LONG)
+                     .map(o => o.nights).sort((a,b) => b - a);
+  const longN  = longs.length ? Math.min(6, longs[0]) + 2*(longs.length - 1) : 0;
+
+  return {activities, outdoor, overnight, nights: shortN + longN,
+          rawNights: real.reduce((s,o) => s + o.nights, 0), longs: longs.length};
+}
+
+function renderBars(){
+  const s = stats();
+  $("#outSum").textContent = `${s.activities} logged · ${s.rawNights} nights`;
+
+  const bars = [
+    {lab:"Activities",     sub:"any troop outing", have:s.activities, need:10, note:""},
+    {lab:"Outdoors",       sub:"",                 have:s.outdoor,    need:6,  note:""},
+    {lab:"Overnight",      sub:"",                 have:s.overnight,  need:3,  note:""},
+    {lab:"Camping nights", sub:"Camping merit badge", have:s.nights, need:20,
+     note: s.longs > 1
+       ? `Counts ${s.rawNights} slept, but ${s.longs} long-term camps: the best counts 6, each extra counts 2.`
+       : ""},
+  ];
+
+  $("#bars").innerHTML = bars.map(b => {
+    const met = b.have >= b.need;
+    const pct = Math.min(100, (b.have / b.need) * 100);
+    return `<div class="bar">
+      <div class="bar-top">
+        <span class="bar-lab">${b.lab}${b.sub ? ` <small>· ${b.sub}</small>` : ""}</span>
+        <span class="bar-val ${met?'met':'short'}">${b.have} / ${b.need}${met?' ✓':''}</span>
+      </div>
+      <div class="track"><div class="fill ${met?'':'short'}" style="width:${pct}%"></div></div>
+      ${b.note ? `<div class="bar-note">${b.note}</div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function renderOutings(){
+  const box = $("#outingList");
+  const sorted = state.outings.slice().sort((a,b) =>
+    (a.planned?1:0) - (b.planned?1:0));
+  box.innerHTML = "";
+
+  sorted.forEach(o => {
+    const btn = document.createElement("button");
+    btn.className = "outing" + (o.planned ? " planned" : "");
+    const cls = o.nights === 0 ? "day" : o.nights >= LONG ? "long" : "";
+    const badge = o.nights === 0
+      ? `<div class="nights day"><b>–</b><span>DAY</span></div>`
+      : `<div class="nights ${cls}"><b>${o.nights}</b><span>${o.nights===1?'NIGHT':'NIGHTS'}</span></div>`;
+    const bits = [o.date];
+    if(o.planned) bits.push("not yet");
+    if(o.nights >= LONG) bits.push("long-term camp");
+    if(!o.outdoor && o.nights === 0) bits.push("indoor");
+    btn.innerHTML = `${badge}
+      <span class="outing-body">
+        <span class="outing-name">${o.name}</span>
+        <span class="outing-meta">${bits.filter(Boolean).join(" · ")}</span>
+      </span>
+      <span class="chev">›</span>`;
+    btn.onclick = () => openForm(o.id);
+    box.appendChild(btn);
+  });
+}
+
+// ---- add / edit one outing ----
+function syncDraft(){
+  $("#nVal").textContent = draft.nights;
+  $("#oOutdoor").setAttribute("aria-pressed", draft.outdoor);
+  $("#oPlanned").setAttribute("aria-pressed", draft.planned);
+}
+
+function openForm(id){
+  editing = id || null;
+  const o = id ? state.outings.find(x => x.id === id) : null;
+  $("#oName").value = o ? o.name : "";
+  $("#oDate").value = o ? o.date : "";
+  draft.nights  = o ? o.nights  : 0;
+  draft.outdoor = o ? o.outdoor : true;
+  draft.planned = o ? o.planned : false;
+  syncDraft();
+  $("#oSave").textContent = o ? "Save changes" : "Add it";
+  $("#delBtn").classList.toggle("hidden", !o);
+  $("#addForm").classList.remove("hidden");
+  $("#addBtn").classList.add("hidden");
+  if(!o) $("#oName").focus();
+}
+
+function closeForm(){
+  editing = null;
+  $("#addForm").classList.add("hidden");
+  $("#addBtn").classList.remove("hidden");
+}
+
+$("#nMinus").onclick = () => { draft.nights = Math.max(0, draft.nights - 1); syncDraft(); };
+$("#nPlus").onclick  = () => { draft.nights += 1; if(draft.nights) draft.outdoor = true; syncDraft(); };
+$("#oOutdoor").onclick = () => { draft.outdoor = !draft.outdoor; syncDraft(); };
+$("#oPlanned").onclick = () => { draft.planned = !draft.planned; syncDraft(); };
+
+$("#addBtn").onclick  = () => openForm(null);
+$("#oCancel").onclick = closeForm;
+
+$("#oSave").onclick = () => {
+  const name = $("#oName").value.trim();
+  if(!name){ $("#oName").focus(); return; }
+  const data = {name, date: $("#oDate").value.trim(),
+                nights: draft.nights, outdoor: draft.outdoor, planned: draft.planned};
+  if(editing){
+    Object.assign(state.outings.find(o => o.id === editing), data);
+  } else {
+    state.outings.unshift(Object.assign({id:"o"+Date.now()}, data));
+  }
+  closeForm(); render(); save();
+};
+
+$("#delBtn").onclick = () => {
+  state.outings = state.outings.filter(o => o.id !== editing);
+  closeForm(); render(); save();
+};
+
+$("#toggleLog").onclick = () => {
+  state.logOpen = !state.logOpen;
+  render(); save();
+};
+
+// ---- backup / restore (works even if window.storage can't save for this viewer) ----
+function download(filename, text){
+  const blob = new Blob([text], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+$("#exportBtn").onclick = () => {
+  const stamp = new Date().toISOString().slice(0,10);
+  download(`rosie-first-class-${stamp}.json`, JSON.stringify(state, null, 2));
+};
+
+$("#importBtn").onclick = () => $("#importFile").click();
+
+$("#importFile").onchange = (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const loaded = JSON.parse(reader.result);
+      if(!loaded.outings || !loaded.done){ throw new Error("not a backup file"); }
+      state = Object.assign(state, loaded);
+      state.filter = "all";
+      render(); save();
+    }catch(err){
+      const s = $("#saved");
+      s.textContent = "That file didn't look like a backup — nothing changed";
+      s.classList.add("show");
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+};
+
+function render1a(){
+  const s = stats();
+  const done = req1aState() === 2;
+  const parts = [
+    [s.activities, 10, "activities"],
+    [s.outdoor, 6, "outdoors"],
+    [s.overnight, 3, "overnight"],
+  ];
+  const line = parts.map(([h,n,l]) => `${h}/${n} ${l}`).join(" · ");
+  return `<div class="req linked ${done?'done':''}">
+      <span class="blaze">${CHECK}</span>
+      <span class="req-top"><span class="req-num">1a</span><span class="tag linked">Tracked from Outings</span></span>
+      <span class="req-txt">10 troop/patrol activities — 6+ outdoors, 3+ with overnight camping. Pitch your own tent.</span>
+      <span class="req-note">${done ? "Complete — all three targets met." : `Currently ${line}. Add outings above to finish this automatically.`}</span>
+    </div>`;
+}
+
+function renderList(){
+  const list = $("#list");
+  list.innerHTML = "";
+
+  const s1a = req1aState();
+  const show1a =
+    state.filter === "all"  ||
+    (state.filter === "todo"  && s1a === 0) ||
+    (state.filter === "done"  && s1a === 2) ||
+    (state.filter === "ready" && false);   // 1a is never in the "needs signature" state
+
+  const camp = document.createElement("section");
+  camp.className = "cat";
+  const header = `<div class="cat-head"><h3>Camping & Outdoor Ethics</h3>
+      <span class="cat-count">${s1a===2?1:0}/2</span></div>`;
+  camp.innerHTML = header + `<div class="trail">${show1a ? render1a() : ""}</div>`;
+  list.appendChild(camp);
+
+  REQS.forEach(([cat, items]) => {
+    if(cat === "Camping & Outdoor Ethics") cat = "__skip_header__";
+    const visible = items.filter(([id]) => {
+      const s = st(id);
+      if(state.filter === "all")   return true;
+      if(state.filter === "todo")  return s === 0;
+      if(state.filter === "ready") return s === 1;
+      return s === 2;
+    });
+    if(!visible.length) return;
+
+    const nDone  = items.filter(([id]) => st(id) === 2).length;
+    const nReady = items.filter(([id]) => st(id) === 1).length;
+
+    let sec, trail;
+    if(cat === "__skip_header__"){
+      // fold 1b straight into the Camping & Outdoor Ethics card built above
+      trail = camp.querySelector(".trail");
+    } else {
+      sec = document.createElement("section");
+      sec.className = "cat";
+      sec.innerHTML = `<div class="cat-head">
+          <h3>${cat}</h3>
+          <span class="cat-count">${nDone}/${items.length}${nReady?` <em>+${nReady}</em>`:""}</span>
+        </div><div class="trail"></div>`;
+      trail = sec.querySelector(".trail");
+    }
+
+    visible.forEach(([id, text, note, tag]) => {
+      const s = st(id);
+      const btn = document.createElement("button");
+      btn.className = "req" + (s === 2 ? " done" : s === 1 ? " ready" : "");
+      btn.setAttribute("aria-pressed", s === 2);
+      const tagHtml = s === 1 ? '<span class="tag ready">Needs a signature</span>'
+                    : tag === "kayak" ? '<span class="tag kayak">Kayaking trip</span>'
+                    : tag === "coh"   ? '<span class="tag coh">Court of honor</span>'
+                    : tag === "quick" ? '<span class="tag quick">Quick win</span>' : "";
+      btn.innerHTML = `
+        <span class="blaze">${CHECK}</span>
+        <span class="req-top"><span class="req-num">${id}</span>${tagHtml}</span>
+        <span class="req-txt">${text}</span>
+        ${note ? `<span class="req-note">${note}</span>` : ""}`;
+      btn.onclick = () => {
+        state.done[id] = (st(id) + 1) % 3;   // none -> needs signature -> signed off
+        render();
+        save();
+      };
+      trail.appendChild(btn);
+    });
+
+    if(sec) list.appendChild(sec);
+  });
+
+  if(!list.children.length){
+    const msg =
+      state.filter === "done"  ? "Nothing signed off yet. Tap a gold <b>To sign</b> requirement twice once your Scoutmaster initials it."
+    : state.filter === "ready" ? "Nothing waiting on a signature right now."
+    : state.filter === "todo"  ? "Nothing left un-started. Everything is either signed or waiting on a signature."
+    : "Everything is done. Go get your board of review.";
+    list.innerHTML = `<div class="card"><p class="hint" style="margin:0">${msg}</p></div>`;
+  }
+}
+
+function render(){
+  renderProgress();
+  renderBars();
+  renderOutings();
+  $("#logPanel").classList.toggle("hidden", !state.logOpen);
+  $("#toggleLog").textContent = state.logOpen ? "Hide outings" : "Show all outings";
+  renderList();
+  const nDone = signedCount(), nReady = readyCount();
+  const counts = {all:TOTAL, todo:TOTAL - nDone - nReady, ready:nReady, done:nDone};
+  document.querySelectorAll(".filters button").forEach(b => {
+    b.setAttribute("aria-pressed", b.dataset.f === state.filter);
+    b.querySelector("b").textContent = counts[b.dataset.f];
+  });
+}
+
+document.querySelectorAll(".filters button").forEach(b => {
+  b.onclick = () => { state.filter = b.dataset.f; render(); };
+});
+
+$("#reset").onclick = () => {
+  state.done = Object.assign({}, EVIDENCE);
+  state.outings = SEED.slice();
+  state.logOpen = false;
+  render();
+  save();
+};
+
+load();
+</script>

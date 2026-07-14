@@ -1,0 +1,772 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --dirt:#8B6339; --dirt-dk:#573D22;
+    --grass:#5B8C3D;
+    --stone:#8C8C8E; --stone-lt:#C6C6C8; --stone-dk:#525254;
+    --obsidian:#151022; --obsidian-2:#1E1830;
+    --emerald:#28C76F; --emerald-dk:#1B8A4C;
+    --gold:#FFD53E; --gold-dk:#B8940C;
+    --diamond:#5DE8DD;
+    --redstone:#E63946;
+    --ink:#F2F0E6; --ink-dim:#B8B4A8;
+    --disp:"Press Start 2P",monospace;
+    --body:"VT323",monospace;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{overflow-x:hidden;max-width:100%;}
+  /* iOS zooms the page if an input's font-size is under 16px — keep them at 16+ */
+  input,textarea,select{font-size:16px;}
+  body{
+    margin:0;font-family:var(--body);font-size:19px;color:var(--ink);
+    background:var(--obsidian);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 2px, transparent 2px 34px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 34px),
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(91,140,61,.14), transparent 60%);
+    background-attachment:fixed;padding-bottom:70px;line-height:1.4;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 12px;}
+
+  /* ---- top bar ---- */
+  header{
+    background:var(--dirt-dk);
+    background-image:linear-gradient(var(--grass) 0 8px, transparent 8px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 8px, transparent 8px 16px);
+    padding:20px 0 16px;border-bottom:5px solid var(--dirt);
+    box-shadow:0 5px 0 rgba(0,0,0,.35);margin-bottom:14px;
+  }
+  h1{font-family:var(--disp);font-size:19px;margin:12px 0 0;color:var(--ink);
+     text-shadow:3px 3px 0 rgba(0,0,0,.55);line-height:1.5;}
+  .eyebrow{font-family:var(--disp);font-size:9px;color:var(--gold);margin:0;
+     text-shadow:2px 2px 0 rgba(0,0,0,.5);}
+
+  .xp-top{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 5px;}
+  .xp-lab{font-family:var(--disp);font-size:10px;color:var(--gold);text-shadow:2px 2px 0 rgba(0,0,0,.5);}
+  .xp-num{font-family:var(--disp);font-size:10px;color:var(--ink);text-shadow:2px 2px 0 rgba(0,0,0,.5);}
+  .xp-bar{height:18px;background:var(--obsidian);padding:3px;
+    border-top:3px solid #000;border-left:3px solid #000;
+    border-right:3px solid var(--stone-lt);border-bottom:3px solid var(--stone-lt);}
+  .xp-track{height:100%;background:#0A0812;position:relative;overflow:hidden;}
+  .xp-fill{height:100%;background:var(--emerald);
+    background-image:linear-gradient(rgba(255,255,255,.25) 0 3px, transparent 3px);
+    transition:width .6s steps(20);}
+  .xp-fill.ghost{background:var(--gold);opacity:.5;position:absolute;top:0;left:0;}
+
+  /* ---- next unlock banner ---- */
+  .nextup{
+    margin-top:14px;padding:11px 12px;background:var(--obsidian-2);
+    border-top:3px solid var(--gold);border-left:3px solid var(--gold);
+    border-right:3px solid var(--gold-dk);border-bottom:3px solid var(--gold-dk);
+    display:flex;align-items:center;gap:11px;cursor:pointer;width:100%;text-align:left;
+    font:inherit;color:inherit;
+  }
+  .nextup:active{transform:translate(1px,1px);}
+  .nextup .ni{font-size:26px;flex:0 0 auto;}
+  .nextup .nt{flex:1;min-width:0;}
+  .nextup .nlab{font-family:var(--disp);font-size:9px;color:var(--gold);margin-bottom:5px;}
+  .nextup .nmain{font-size:17px;color:var(--ink);line-height:1.3;}
+  .nextup .go{font-family:var(--disp);font-size:9px;color:var(--diamond);}
+
+  /* ---- zone grid ---- */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .rank-band{
+    font-family:var(--disp);font-size:11px;color:var(--gold);
+    margin:20px 0 10px;padding:9px 11px;background:var(--dirt-dk);
+    border-left:6px solid var(--gold);text-shadow:2px 2px 0 rgba(0,0,0,.5);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .rank-band em{font-style:normal;color:var(--ink-dim);font-size:9px;}
+  .rank-band.clear{border-left-color:var(--emerald);color:var(--emerald);}
+
+  .zone{
+    background:var(--stone-dk);padding:13px 10px;cursor:pointer;
+    border-top:3px solid var(--stone-lt);border-left:3px solid var(--stone-lt);
+    border-right:3px solid #2a2a2c;border-bottom:3px solid #2a2a2c;
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    font:inherit;color:inherit;position:relative;
+  }
+  .zone:active{
+    border-top-color:#2a2a2c;border-left-color:#2a2a2c;
+    border-right-color:var(--stone-lt);border-bottom-color:var(--stone-lt);
+  }
+  .zone .zi{font-size:30px;line-height:1;}
+  .zone .zn{font-family:var(--disp);font-size:9px;text-align:center;line-height:1.5;color:var(--ink);}
+  .zone .zbar{width:100%;height:9px;background:var(--obsidian);
+    border:2px solid #000;padding:1px;}
+  .zone .zfill{height:100%;background:var(--emerald);transition:width .4s steps(8);}
+  .zone .zct{font-family:var(--disp);font-size:10px;color:var(--ink-dim);}
+
+  .zone.clear{background:#0F2A18;border-top-color:var(--emerald);border-left-color:var(--emerald);}
+  .zone.clear .zn{color:var(--emerald);}
+  .zone.clear .zct{color:var(--emerald);}
+
+  .zone .turnin{
+    position:absolute;top:-7px;right:-7px;background:var(--gold);color:#2A2000;
+    font-family:var(--disp);font-size:9px;width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--gold-dk);animation:pulse 1.5s infinite;
+  }
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+  .badge-stamp{
+    position:absolute;top:4px;left:4px;font-size:15px;
+  }
+
+  /* ---- quest view ---- */
+  .backbtn{
+    font-family:var(--disp);font-size:9px;color:var(--ink);cursor:pointer;
+    background:var(--stone-dk);padding:10px 14px;margin-bottom:14px;
+    border-top:3px solid var(--stone-lt);border-left:3px solid var(--stone-lt);
+    border-right:3px solid #2a2a2c;border-bottom:3px solid #2a2a2c;
+  }
+  .zone-hero{
+    display:flex;align-items:center;gap:13px;padding:14px;margin-bottom:14px;
+    background:var(--obsidian-2);
+    border-top:3px solid var(--stone-lt);border-left:3px solid var(--stone-lt);
+    border-right:3px solid #2a2a2c;border-bottom:3px solid #2a2a2c;
+  }
+  .zone-hero .hi{font-size:38px;}
+  .zone-hero h2{font-family:var(--disp);font-size:14px;margin:0 0 6px;text-shadow:2px 2px 0 rgba(0,0,0,.5);}
+  .zone-hero .hsub{font-size:16px;color:var(--ink-dim);}
+
+  .req{
+    position:relative;display:flex;gap:11px;width:100%;text-align:left;
+    background:var(--stone-dk);padding:12px;margin-bottom:8px;
+    border-top:3px solid var(--stone-lt);border-left:3px solid var(--stone-lt);
+    border-right:3px solid #2a2a2c;border-bottom:3px solid #2a2a2c;
+    cursor:pointer;font:inherit;color:inherit;
+  }
+  .req:active{border-top-color:#2a2a2c;border-left-color:#2a2a2c;
+    border-right-color:var(--stone-lt);border-bottom-color:var(--stone-lt);}
+  .slot{flex:0 0 auto;width:32px;height:32px;background:var(--obsidian);
+    border-top:2px solid #000;border-left:2px solid #000;
+    border-right:2px solid var(--stone-lt);border-bottom:2px solid var(--stone-lt);
+    display:flex;align-items:center;justify-content:center;}
+  .slot svg{width:17px;height:17px;opacity:0;transform:scale(.4);transition:.15s;}
+  .req.ready{background:#3A3010;border-top-color:var(--gold);border-left-color:var(--gold);}
+  .req.ready .slot{background:var(--gold-dk);border-top-color:var(--gold);border-left-color:var(--gold);}
+  .req.ready .slot svg{opacity:1;transform:scale(1);stroke:#2A2000;}
+  .req.done{background:#0F2A18;border-top-color:var(--emerald);border-left-color:var(--emerald);}
+  .req.done .slot{background:var(--emerald-dk);border-top-color:var(--emerald);border-left-color:var(--emerald);}
+  .req.done .slot svg{opacity:1;transform:scale(1);}
+  .req.done .req-txt{opacity:.5;text-decoration:line-through;}
+  .req-body{flex:1;min-width:0;}
+  .req-top{display:flex;align-items:center;gap:7px;margin-bottom:4px;flex-wrap:wrap;}
+  .req-num{font-family:var(--disp);font-size:9px;color:var(--obsidian);background:var(--stone-lt);padding:3px 6px;}
+  .tag{font-family:var(--disp);font-size:9px;padding:4px 7px;}
+  .tag.ready{background:var(--gold);color:#2A2000;}
+  .tag.kayak{background:#2FA79C;color:var(--ink);}
+  .tag.stats{background:var(--diamond);color:#0A2E2B;}
+  .req-txt{font-size:18px;line-height:1.4;}
+  .req-note{font-size:15px;color:var(--ink-dim);margin-top:6px;padding-left:9px;border-left:2px solid var(--gold);}
+
+  .zone-clear-msg{
+    padding:14px;text-align:center;background:rgba(40,199,111,.14);
+    border:2px solid var(--emerald-dk);color:var(--emerald);
+    font-family:var(--disp);font-size:10px;line-height:1.7;margin-top:10px;
+  }
+
+  /* ---- fitness ---- */
+  .card{background:var(--stone-dk);padding:14px;margin-bottom:14px;
+    border-top:3px solid var(--stone-lt);border-left:3px solid var(--stone-lt);
+    border-right:3px solid #2a2a2c;border-bottom:3px solid #2a2a2c;}
+  .card h3{font-family:var(--disp);font-size:11px;color:var(--diamond);margin:0 0 8px;}
+  .hint{font-size:16px;color:var(--ink-dim);margin:0 0 10px;line-height:1.5;}
+  .sect-lab{font-family:var(--disp);font-size:9px;color:var(--gold);margin:16px 0 8px;
+    padding-bottom:5px;border-bottom:2px solid rgba(255,213,62,.25);}
+  .plan-in,.date-in,.stat-in{background:var(--obsidian);color:var(--ink);font-family:var(--body);
+    border-top:2px solid #000;border-left:2px solid #000;
+    border-right:2px solid var(--stone-lt);border-bottom:2px solid var(--stone-lt);}
+  .plan-in{width:100%;font-size:17px;padding:10px;resize:vertical;}
+  .stat-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid rgba(255,255,255,.06);}
+  .stat-row:first-of-type{border-top:none;}
+  .stat-name{flex:0 0 82px;font-family:var(--disp);font-size:9px;color:var(--ink-dim);line-height:1.6;}
+  .stat-in{flex:1;min-width:0;font-size:17px;text-align:center;padding:8px 4px;}
+  .stat-arrow{flex:0 0 20px;text-align:center;font-family:var(--disp);font-size:12px;}
+  .stat-arrow.up{color:var(--emerald);} .stat-arrow.down{color:var(--redstone);} .stat-arrow.flat{color:var(--ink-dim);}
+  .stat-heads{display:flex;gap:9px;margin-bottom:2px;}
+  .stat-heads span{flex:1;text-align:center;font-family:var(--disp);font-size:9px;color:var(--gold);}
+  .stat-heads span:first-child{flex:0 0 82px;} .stat-heads span:last-child{flex:0 0 20px;}
+  .verdict{font-size:16px;margin:11px 0 0;padding:9px;text-align:center;}
+  .verdict.win{background:rgba(40,199,111,.15);color:var(--emerald);border:2px solid var(--emerald-dk);}
+  .verdict.wait{background:rgba(255,213,62,.1);color:var(--gold);border:2px solid var(--gold-dk);}
+  .date-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+  .date-row label{font-family:var(--disp);font-size:9px;color:var(--ink-dim);}
+  .date-in{flex:1;font-size:17px;padding:8px;}
+  .win-info{font-size:16px;color:var(--ink-dim);margin:0 0 9px;}
+  .win-info b{color:var(--diamond);}
+  .day-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;}
+  .day-sq{background:var(--obsidian);cursor:pointer;padding:6px 2px;
+    border-top:2px solid #000;border-left:2px solid #000;
+    border-right:2px solid var(--stone-lt);border-bottom:2px solid var(--stone-lt);
+    font-family:var(--body);font-size:14px;color:var(--ink-dim);
+    display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1;}
+  .day-sq .dnum{font-family:var(--disp);font-size:9px;opacity:.55;}
+  .day-sq.on{background:var(--emerald-dk);color:var(--ink);
+    border-top-color:var(--emerald);border-left-color:var(--emerald);}
+  .day-sq.future{opacity:.3;cursor:not-allowed;}
+  .day-sq.today{border-right-color:var(--gold);border-bottom-color:var(--gold);}
+  .day-count{font-size:16px;color:var(--ink-dim);margin-top:11px;text-align:center;}
+  .day-count b{color:var(--gold);font-family:var(--disp);font-size:11px;}
+
+  /* ---- footer ---- */
+  .foot{text-align:center;padding:22px 0 6px;}
+  .foot-row{display:flex;gap:8px;max-width:330px;margin:0 auto 10px;}
+  .pbtn{font-family:var(--disp);font-size:9px;color:var(--ink);cursor:pointer;
+    background:var(--stone-dk);padding:15px 6px;min-height:46px;
+    border-top:3px solid var(--stone-lt);border-left:3px solid var(--stone-lt);
+    border-right:3px solid #2a2a2c;border-bottom:3px solid #2a2a2c;}
+  .pbtn.flex{flex:1;} .pbtn.wide{padding:11px 20px;}
+  .saved{font-size:16px;color:var(--emerald);height:20px;margin-top:11px;opacity:0;transition:.3s;}
+  .saved.show{opacity:1;}
+  .hidden{display:none;}
+  /* ---------- iPad ---------- */
+  @media (min-width:700px){
+    .wrap{max-width:900px;padding:0 20px;}
+    body{font-size:21px;}
+
+    /* the quest map should read as a game board, not a phone column */
+    .grid{grid-template-columns:repeat(4,1fr);gap:14px;}
+    .zone{padding:18px 12px;gap:9px;}
+    .zone .zi{font-size:40px;}
+    .zone .zn{font-size:11px;}
+    .zone .zct{font-size:11px;}
+    .zone .zbar{height:11px;}
+    .zone .turnin{width:26px;height:26px;font-size:11px;}
+
+    h1{font-size:24px;}
+    .eyebrow{font-size:11px;}
+    .rank-band{font-size:13px;padding:11px 14px;}
+    .rank-band em{font-size:11px;}
+
+    .nextup{padding:15px 16px;gap:14px;}
+    .nextup .ni{font-size:34px;}
+    .nextup .nlab{font-size:10px;}
+    .nextup .nmain{font-size:20px;}
+    .nextup .go{font-size:11px;}
+
+    .xp-bar{height:22px;}
+    .xp-lab,.xp-num{font-size:12px;}
+
+    /* quest view */
+    .zone-hero{padding:18px;}
+    .zone-hero .hi{font-size:48px;}
+    .zone-hero h2{font-size:17px;}
+    .zone-hero .hsub{font-size:18px;}
+    .req{padding:15px;gap:14px;}
+    .slot{width:38px;height:38px;}
+    .slot svg{width:20px;height:20px;}
+    .req-txt{font-size:20px;}
+    .req-note{font-size:17px;}
+    .req-num{font-size:11px;}
+    .tag{font-size:10px;}
+    .backbtn{font-size:11px;padding:13px 18px;}
+
+    /* fitness: 30 days across 10 columns reads far better with the room */
+    .day-grid{grid-template-columns:repeat(10,1fr);gap:6px;}
+    .day-sq{padding:9px 2px;font-size:16px;}
+    .day-sq .dnum{font-size:10px;}
+    .card h3{font-size:13px;}
+    .hint{font-size:18px;}
+    .sect-lab{font-size:11px;}
+    .stat-name{flex:0 0 110px;font-size:10px;}
+    .stat-heads span:first-child{flex:0 0 110px;}
+    .stat-in{font-size:19px;padding:11px 6px;}
+    .win-info,.verdict,.day-count{font-size:18px;}
+
+    .pbtn{font-size:11px;padding:16px 10px;}
+    .foot-row{max-width:420px;}
+  }
+
+  @media (max-width:379px){
+    .day-grid{grid-template-columns:repeat(5,1fr);}
+    h1{font-size:16px;}
+    .zone .zn{font-size:8px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">TROOP 116</p>
+    <h1 id="hTitle">MAX'S QUEST MAP</h1>
+    <div class="xp-top">
+      <span class="xp-lab">XP</span>
+      <span class="xp-num" id="xpNum">0 / 45</span>
+    </div>
+    <div class="xp-bar"><div class="xp-track">
+      <div class="xp-fill ghost" id="xpGhost" style="width:0%"></div>
+      <div class="xp-fill" id="xpFill" style="width:0%"></div>
+    </div></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="view"></div>
+
+  <div class="foot">
+    <div class="foot-row">
+      <button class="pbtn flex" id="exportBtn">SAVE FILE</button>
+      <button class="pbtn flex" id="importBtn">LOAD FILE</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" class="hidden">
+    <button class="pbtn wide" id="reset">RESET</button>
+    <p class="saved" id="saved">Saved</p>
+  </div>
+</div>
+
+<script>
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+
+const ZONES = [
+  {
+    id:"Scscoutoathl", name:"THE OATH", full:"Scout Oath, Law & Spirit",
+    rank:"Scout", icon:"\u2605", color:"#FFD53E",
+    items:[
+      ["1a", "Repeat from memory the Scout Oath, Law, motto, and slogan. Explain their meaning in your own words.", "", ""],
+      ["1b", "Explain what Scout spirit is. Describe ways you've shown it.", "", ""],
+      ["1c", "Demonstrate the Scout sign, salute, and handshake. Explain when each is used.", "", ""],
+      ["1d", "Describe the First Class Scout badge and what each part stands for.", "", ""],
+      ["1f", "Repeat the Pledge of Allegiance from memory. Explain its meaning in your own words.", "", ""],
+    ]},
+  {
+    id:"Scoutdooreth", name:"WILDS", full:"Outdoor Ethics",
+    rank:"Scout", icon:"\ud83c\udf32", color:"#5B8C3D",
+    items:[
+      ["1e", "Repeat the Outdoor Code from memory. List the seven principles of Leave No Trace. Explain the difference between the two.", "", ""],
+    ]},
+  {
+    id:"Sctroopknowl", name:"THE TROOP", full:"Troop Knowledge",
+    rank:"Scout", icon:"\u2691", color:"#5DE8DD",
+    items:[
+      ["2a", "After attending a troop meeting, describe how Scouts in the troop provide its leadership.", "", ""],
+      ["2b", "Describe the four steps of Scout advancement.", "", ""],
+      ["2c", "Describe what the Scouts BSA ranks are and how they're earned.", "", ""],
+      ["2d", "Describe what merit badges are and how they're earned.", "", ""],
+      ["3a", "Explain the patrol method. Describe the types of patrols used in your troop.", "", ""],
+      ["3b", "Learn your patrol name, emblem, flag, and yell. Explain how these build patrol spirit.", "", ""],
+    ]},
+  {
+    id:"Sctools", name:"TOOLS", full:"Tools",
+    rank:"Scout", icon:"\ud83e\ude93", color:"#C6C6C8",
+    items:[
+      ["4a", "Tie a square knot, two half-hitches, and a taut-line hitch. Explain how each is used.", "", ""],
+      ["4b", "Show proper care of a rope: whip and fuse the ends.", "", ""],
+      ["5", "Explain how to use a pocketknife safely and responsibly.", "", ""],
+    ]},
+  {
+    id:"Scpersonalsa", name:"SHIELD", full:"Personal Safety",
+    rank:"Scout", icon:"\ud83d\udee1", color:"#E63946",
+    items:[
+      ["6a", "With a parent or guardian, complete the exercises in the Child Abuse Prevention pamphlet.", "", ""],
+      ["6b", "With a parent's permission, view the Personal Safety Awareness videos.", "", ""],
+    ]},
+  {
+    id:"Scsignoff", name:"BOSS", full:"Sign-Off",
+    rank:"Scout", icon:"\ud83d\udc51", color:"#FFD53E",
+    items:[
+      ["7", "Participate in a Scoutmaster conference for the Scout rank.", "", ""],
+    ]},
+  {
+    id:"Tecampingout", name:"BASE CAMP", full:"Camping & Outdoor Ethics",
+    rank:"Tenderfoot", icon:"\u26fa", color:"#5B8C3D",
+    items:[
+      ["1a", "Present yourself prepared for an overnight campout. Show your gear and how to pack it.", "", ""],
+      ["1b", "Spend at least one night on a patrol or troop campout, in a tent you helped pitch.", "", "kayak"],
+      ["1c", "Explain how you demonstrated the Outdoor Code and Leave No Trace on campouts.", "", "kayak"],
+    ]},
+  {
+    id:"Tecooking", name:"CAMPFIRE", full:"Cooking",
+    rank:"Tenderfoot", icon:"\ud83d\udd25", color:"#FF8C42",
+    items:[
+      ["2a", "On a campout, help prepare a meal. Tell why sharing meal prep and cleanup matters.", "", "kayak"],
+      ["2b", "On a campout, demonstrate the safe way to clean items used to prepare, serve, and eat a meal.", "", "kayak"],
+      ["2c", "Explain why eating together as a patrol matters.", "", "kayak"],
+    ]},
+  {
+    id:"Tetools", name:"FORGE", full:"Tools",
+    rank:"Tenderfoot", icon:"\ud83d\udd28", color:"#C6C6C8",
+    items:[
+      ["3a", "Demonstrate a practical use of the square knot.", "", ""],
+      ["3b", "Demonstrate a practical use of two half-hitches.", "", ""],
+      ["3c", "Demonstrate a practical use of the taut-line hitch.", "", ""],
+      ["3d", "Show proper care, sharpening, and use of a knife, saw, and ax. Describe when each is used.", "", ""],
+    ]},
+  {
+    id:"Tefirstaidna", name:"MEDIC", full:"First Aid & Nature",
+    rank:"Tenderfoot", icon:"\u2695", color:"#E63946",
+    items:[
+      ["4a", "Show first aid for: cuts/scrapes, blisters, minor burns, insect/tick bites, snakebite, nosebleed, frostbite/sunburn, choking.", "", ""],
+      ["4b", "Describe hazardous plants in your area and how to treat exposure to them.", "", ""],
+      ["4c", "Tell how to prevent the injuries/exposure listed in 4a and 4b while outdoors.", "", ""],
+      ["4d", "Assemble a personal first-aid kit for future campouts and hikes. Explain each item.", "", ""],
+    ]},
+  {
+    id:"Tehiking", name:"THE TRAIL", full:"Hiking",
+    rank:"Tenderfoot", icon:"\ud83e\udd7e", color:"#A87D4C",
+    items:[
+      ["5a", "Explain the buddy system for personal safety. Use it on a troop or patrol outing.", "", ""],
+      ["5b", "Describe what to do if you become lost on a hike or campout.", "", ""],
+      ["5c", "Explain the rules of safe hiking -- road and cross-country, day and night.", "", ""],
+      ["5d", "Explain why hiking on trails/durable surfaces matters, with examples you saw.", "", ""],
+    ]},
+  {
+    id:"Tefitness", name:"TRAINING", full:"Fitness",
+    rank:"Tenderfoot", icon:"\u2694", color:"#28C76F",
+    items:[
+      ["6a", "Record your baseline: pushups, situps/curl-ups, sit-and-reach, 1-mile walk/run.", "Enter these in the STAT SHEET below.", "stats"],
+      ["6b", "Make a 30-day improvement plan for those activities and track it.", "Log your days in the STAT SHEET below -- no set number required, just track for 30 days.", "stats"],
+      ["6c", "Show improvement in each activity after 30 days of practicing your plan.", "Enter your retest numbers in the STAT SHEET -- any improvement at all counts.", "stats"],
+    ]},
+  {
+    id:"Tecitizenshi", name:"THE FLAG", full:"Citizenship",
+    rank:"Tenderfoot", icon:"\ud83c\udff5", color:"#5DE8DD",
+    items:[
+      ["7a", "Demonstrate how to display, raise, lower, and fold the U.S. flag.", "", ""],
+      ["7b", "Complete 1 hour of service. Explain how it relates to the Scout slogan and motto.", "", ""],
+    ]},
+  {
+    id:"Teleadership", name:"MENTOR", full:"Leadership",
+    rank:"Tenderfoot", icon:"\ud83c\udf93", color:"#FFD53E",
+    items:[
+      ["8", "Describe the Teaching EDGE method. Use it to teach someone the square knot.", "", ""],
+    ]},
+  {
+    id:"Tescoutspiri", name:"SPIRIT", full:"Scout Spirit",
+    rank:"Tenderfoot", icon:"\u2728", color:"#FFD53E",
+    items:[
+      ["9", "Demonstrate Scout spirit. Tell how you've lived four points of the Scout Law.", "", ""],
+    ]},
+  {
+    id:"Tesignoff", name:"FINAL BOSS", full:"Sign-Off",
+    rank:"Tenderfoot", icon:"\ud83d\udc51", color:"#FFD53E",
+    items:[
+      ["10", "Participate in a Scoutmaster conference for Tenderfoot.", "", ""],
+      ["11", "Successfully complete your board of review for Tenderfoot.", "", ""],
+    ]},
+];
+
+const TOTAL = ZONES.reduce((n,z) => n + z.items.length, 0);
+const KEY = "max_quest_map_v2";
+
+let state = {
+  done:{}, zone:null,
+  fitness:{ plan:"", startDate:"",
+    baseline:{pushups:"",situps:"",reach:"",mile:""},
+    retest:{pushups:"",situps:"",reach:"",mile:""},
+    active:{} }
+};
+
+const $ = s => document.querySelector(s);
+// Scout and Tenderfoot both have a "1a", "6a", etc — namespace by rank so they
+// can never collide and silently check each other off.
+const keyOf = (z, id) => z.rank + ":" + id;
+const st = k => state.done[k] || 0;
+
+// storage: prefer Claude's artifact storage, fall back to localStorage anywhere
+// else (emailed file, GitHub Pages). Checked per call — not latched at load —
+// so it can't lock onto the wrong backend if window.storage appears late.
+const hasClaudeStore = () =>
+  typeof window !== "undefined" && window.storage
+  && typeof window.storage.get === "function";
+
+const store = {
+  get: async (k) => {
+    if(hasClaudeStore()) return window.storage.get(k, true);
+    const v = localStorage.getItem(k);
+    return v == null ? null : {key:k, value:v};
+  },
+  set: async (k, v) => {
+    if(hasClaudeStore()) return window.storage.set(k, v, true);
+    localStorage.setItem(k, v);
+    return {key:k, value:v};
+  },
+};
+
+async function load(){
+  try{
+    const r = await store.get(KEY);
+    if(r && r.value) state = Object.assign(state, JSON.parse(r.value));
+    state.zone = null;
+  }catch(e){}
+  render();
+}
+
+let saveTimer;
+async function save(){
+  try{
+    const r = await store.set(KEY, JSON.stringify(state));
+    if(!r) throw new Error("fail");
+    const s = $("#saved");
+    s.textContent = "Game saved"; s.classList.add("show");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>s.classList.remove("show"), 1300);
+  }catch(e){
+    const s = $("#saved");
+    s.textContent = "Not saving - use SAVE FILE"; s.classList.add("show");
+  }
+}
+
+const zSigned = z => z.items.filter(([id]) => st(keyOf(z,id))===2).length;
+const zReady  = z => z.items.filter(([id]) => st(keyOf(z,id))===1).length;
+const zClear  = z => zSigned(z) === z.items.length;
+
+function signedTotal(){ return ZONES.reduce((n,z)=>n+zSigned(z),0); }
+function readyTotal(){  return ZONES.reduce((n,z)=>n+zReady(z),0); }
+
+function renderXP(){
+  const s = signedTotal(), r = readyTotal();
+  $("#xpNum").textContent = s + " / " + TOTAL;
+  $("#xpFill").style.width = (s/TOTAL*100).toFixed(1) + "%";
+  $("#xpGhost").style.width = ((s+r)/TOTAL*100).toFixed(1) + "%";
+}
+
+// the nearest zone to completing — what games always surface
+function nearestZone(){
+  const open = ZONES.filter(z => !zClear(z));
+  if(!open.length) return null;
+  open.sort((a,b) => (a.items.length - zSigned(a)) - (b.items.length - zSigned(b))
+                     || zSigned(b) - zSigned(a));
+  return open[0];
+}
+
+function renderMap(){
+  const v = $("#view");
+  $("#hTitle").textContent = "MAX'S QUEST MAP";
+  let html = "";
+
+  const near = nearestZone();
+  if(near){
+    const left = near.items.length - zSigned(near);
+    html += `<button class="nextup" data-goto="${near.id}">
+      <span class="ni">${near.icon}</span>
+      <span class="nt">
+        <span class="nlab">CLOSEST TO A BADGE</span>
+        <span class="nmain">${near.name} - ${left} quest${left>1?"s":""} from clearing it</span>
+      </span>
+      <span class="go">GO &#9656;</span>
+    </button>`;
+  }
+
+  ["Scout","Tenderfoot"].forEach(rank => {
+    const zs = ZONES.filter(z => z.rank === rank);
+    const done = zs.filter(zClear).length;
+    const allClear = done === zs.length;
+    html += `<div class="rank-band ${allClear?"clear":""}">
+      <span>${allClear?"\u2605 ":""}${rank.toUpperCase()} RANK</span>
+      <em>${done}/${zs.length} zones</em></div><div class="grid">`;
+    zs.forEach(z => {
+      const s = zSigned(z), r = zReady(z), n = z.items.length;
+      html += `<button class="zone ${zClear(z)?"clear":""}" data-goto="${z.id}">
+        ${zClear(z)?'<span class="badge-stamp">\u2605</span>':""}
+        ${r?`<span class="turnin">!</span>`:""}
+        <span class="zi">${z.icon}</span>
+        <span class="zn">${z.name}</span>
+        <span class="zbar"><span class="zfill" style="width:${s/n*100}%"></span></span>
+        <span class="zct">${s}/${n}${zClear(z)?" \u2713":""}</span>
+      </button>`;
+    });
+    html += `</div>`;
+  });
+
+  v.innerHTML = html;
+  v.querySelectorAll("[data-goto]").forEach(b => {
+    b.onclick = () => { state.zone = b.dataset.goto; render(); save(); };
+  });
+}
+
+function renderZone(){
+  const z = ZONES.find(x => x.id === state.zone);
+  if(!z){ state.zone = null; return renderMap(); }
+  const v = $("#view");
+  $("#hTitle").textContent = z.name;
+
+  let html = `<button class="backbtn" id="back">&#9666; QUEST MAP</button>
+    <div class="zone-hero">
+      <span class="hi">${z.icon}</span>
+      <span>
+        <h2>${z.name}</h2>
+        <span class="hsub">${z.full} &middot; ${z.rank} rank &middot; ${zSigned(z)}/${z.items.length} cleared</span>
+      </span>
+    </div>`;
+
+  z.items.forEach(([id, text, note, tag]) => {
+    const k = keyOf(z, id);
+    const s = st(k);
+    const tagHtml = s===1 ? '<span class="tag ready">READY</span>'
+                  : tag==="kayak" ? '<span class="tag kayak">CAMPOUT</span>'
+                  : tag==="stats" ? '<span class="tag stats">STAT SHEET</span>' : "";
+    html += `<button class="req ${s===2?"done":s===1?"ready":""}" data-req="${k}">
+      <span class="slot">${CHECK}</span>
+      <span class="req-body">
+        <span class="req-top"><span class="req-num">${id}</span>${tagHtml}</span>
+        <span class="req-txt">${text}</span>
+        ${note?`<span class="req-note">${note}</span>`:""}
+      </span>
+    </button>`;
+  });
+
+  if(z.full === "Fitness") html += fitnessHTML();
+
+  if(zClear(z)) html += `<p class="zone-clear-msg">\u2605 ZONE CLEARED \u2605<br>${z.name} badge earned</p>`;
+
+  v.innerHTML = html;
+  $("#back").onclick = () => { state.zone = null; render(); save(); };
+  v.querySelectorAll("[data-req]").forEach(b => {
+    b.onclick = () => {
+      const k = b.dataset.req;
+      state.done[k] = (st(k)+1) % 3;
+      render(); save();
+    };
+  });
+  if(z.full === "Fitness") wireFitness();
+}
+
+/* ---------- fitness ---------- */
+const STATS = [
+  {key:"pushups", label:"PUSH-UPS", unit:"in 60s", hi:true},
+  {key:"situps",  label:"SIT-UPS",  unit:"in 60s", hi:true},
+  {key:"reach",   label:"SIT+REACH",unit:"inches", hi:true},
+  {key:"mile",    label:"MILE RUN", unit:"mm:ss",  hi:false},
+];
+function parseStat(v){
+  if(v===""||v==null) return null;
+  if(v.indexOf(":")>-1){ const [m,s]=v.split(":").map(Number);
+    return (isNaN(m)||isNaN(s))?null:m*60+s; }
+  const n = parseFloat(v); return isNaN(n)?null:n;
+}
+const isoOf = d => d.toISOString().slice(0,10);
+function addDays(iso,n){ const d=new Date(iso+"T12:00:00"); d.setDate(d.getDate()+n); return isoOf(d); }
+function prettyDate(iso){ return new Date(iso+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"}); }
+
+function fitnessHTML(){
+  const f = state.fitness;
+  let rows = "";
+  STATS.forEach(s => {
+    const b=f.baseline[s.key], r=f.retest[s.key];
+    const bN=parseStat(b), rN=parseStat(r);
+    let arrow = '<span class="stat-arrow flat">--</span>';
+    if(bN!==null && rN!==null && bN!==rN){
+      const up = s.hi ? rN>bN : rN<bN;
+      arrow = `<span class="stat-arrow ${up?"up":"down"}">${up?"\u25B2":"\u25BC"}</span>`;
+    }
+    rows += `<div class="stat-row">
+      <span class="stat-name">${s.label}<br><span style="opacity:.6">(${s.unit})</span></span>
+      <input class="stat-in" data-kind="baseline" data-key="${s.key}" placeholder="--" value="${b}">
+      <input class="stat-in" data-kind="retest" data-key="${s.key}" placeholder="--" value="${r}">
+      ${arrow}</div>`;
+  });
+
+  const res = STATS.map(s => {
+    const b=parseStat(f.baseline[s.key]), r=parseStat(f.retest[s.key]);
+    if(b===null||r===null) return null;
+    return s.hi ? r>b : r<b;
+  });
+  let verdict;
+  if(res.some(x=>x===null))
+    verdict = `<p class="verdict wait">Fill in all 8 numbers to see if 6c clears.</p>`;
+  else if(res.every(Boolean))
+    verdict = `<p class="verdict win">\u2605 ALL FOUR IMPROVED - 6c cleared!</p>`;
+  else
+    verdict = `<p class="verdict wait">Still to beat: ${STATS.filter((s,i)=>!res[i]).map(s=>s.label).join(", ")}</p>`;
+
+  let winInfo="", grid="", cnt=0;
+  if(f.startDate){
+    const today=isoOf(new Date()), end=addDays(f.startDate,29);
+    const elapsed=Math.min(30,Math.max(0,
+      Math.round((new Date(today+"T12:00:00")-new Date(f.startDate+"T12:00:00"))/86400000)+1));
+    winInfo = `<p class="win-info">${prettyDate(f.startDate)} to ${prettyDate(end)} &middot;
+      ${elapsed>=30?"<b>30 days complete - go retest!</b>":`Day <b>${elapsed}</b> of 30`}</p>`;
+    for(let i=0;i<30;i++){
+      const iso=addDays(f.startDate,i), on=!!f.active[iso], future=iso>today;
+      if(on && iso>=f.startDate && iso<=end) cnt++;
+      grid += `<button type="button" class="day-sq ${on?"on":""} ${future?"future":""} ${iso===today?"today":""}"
+        ${future?"":`data-day="${iso}"`}><span class="dnum">${i+1}</span>${prettyDate(iso)}</button>`;
+    }
+  } else {
+    winInfo = `<p class="win-info">Pick your start date and the 30-day window lays itself out.</p>`;
+  }
+
+  return `<div class="card">
+    <h3>&#9878; FITNESS STAT SHEET</h3>
+    <p class="hint">A <b>30-day window</b> on the calendar - <b>not</b> 30 workouts. Rest days are normal.</p>
+    <p class="sect-lab">1. YOUR PLAN (6b)</p>
+    <textarea class="plan-in" id="planIn" rows="3" placeholder="e.g. push-ups + sit-ups Mon/Wed/Fri, stretch daily, run the mile Saturdays...">${f.plan||""}</textarea>
+    <p class="sect-lab">2. BASELINE &amp; RETEST (6a &amp; 6c)</p>
+    <div class="stat-heads"><span></span><span>BASELINE</span><span>RETEST</span><span></span></div>
+    ${rows}${verdict}
+    <p class="sect-lab">3. THE 30-DAY WINDOW (6b)</p>
+    <div class="date-row"><label>DAY 1 =</label>
+      <input type="date" class="date-in" id="startDate" value="${f.startDate||""}"></div>
+    ${winInfo}
+    <div class="day-grid">${grid}</div>
+    ${f.startDate?`<p class="day-count"><b>${cnt}</b> active days logged</p>`:""}
+  </div>`;
+}
+
+function wireFitness(){
+  const p = $("#planIn");
+  if(p){ p.oninput = e => { state.fitness.plan = e.target.value; };
+         p.onchange = () => save(); }
+  const sd = $("#startDate");
+  if(sd) sd.onchange = e => { state.fitness.startDate = e.target.value; render(); save(); };
+  document.querySelectorAll(".stat-in").forEach(inp => {
+    inp.oninput  = () => { state.fitness[inp.dataset.kind][inp.dataset.key] = inp.value; };
+    inp.onchange = () => { render(); save(); };
+  });
+  document.querySelectorAll("[data-day]").forEach(sq => {
+    sq.onclick = () => {
+      const d = sq.dataset.day;
+      if(state.fitness.active[d]) delete state.fitness.active[d];
+      else state.fitness.active[d] = true;
+      render(); save();
+    };
+  });
+}
+
+function render(){
+  renderXP();
+  if(state.zone) renderZone(); else renderMap();
+}
+
+$("#reset").onclick = () => {
+  state.done = {}; state.zone = null;
+  state.fitness = {plan:"",startDate:"",
+    baseline:{pushups:"",situps:"",reach:"",mile:""},
+    retest:{pushups:"",situps:"",reach:"",mile:""}, active:{}};
+  render(); save();
+};
+
+function download(fn, txt){
+  const b = new Blob([txt],{type:"application/json"});
+  const u = URL.createObjectURL(b);
+  const a = document.createElement("a");
+  a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(u);
+}
+$("#exportBtn").onclick = () =>
+  download(`max-quest-${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(state,null,2));
+$("#importBtn").onclick = () => $("#importFile").click();
+$("#importFile").onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try{
+      const l = JSON.parse(rd.result);
+      if(!l.done) throw new Error("bad");
+      state = Object.assign(state, l); state.zone = null;
+      render(); save();
+    }catch(err){
+      const s=$("#saved"); s.textContent="Not a save file"; s.classList.add("show");
+    }
+  };
+  rd.readAsText(f); e.target.value="";
+};
+
+load();
+</script>

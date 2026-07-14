@@ -1,9 +1,11 @@
-
-<!-- saved from url=(0063)file:///Users/catherinewhite/Downloads/rosie-first-class_7.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="./rosie-first-class_files/css2" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -109,12 +111,19 @@
 
   /* ============ CREDITS ============ */
   .credits-card{
-    background:var(--card);
+    display:block;width:calc(100% - 32px);
+    background:var(--card);border:0;
     margin:-16px 16px 0;
     padding:18px 18px 16px;
     border-radius:20px;
     box-shadow:0 4px 20px rgba(194,24,91,.12);
-    position:relative;z-index:2;
+    position:relative;z-index:2;cursor:pointer;
+    font:inherit;color:inherit;text-align:center;
+  }
+  .credits-card:active{transform:scale(.985);}
+  .credits-card::after{
+    content:"\21bb";position:absolute;top:12px;right:14px;
+    font-size:14px;color:var(--blush-2);
   }
   .credits-eyebrow{
     font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
@@ -137,8 +146,10 @@
   }
   .credits-note{
     font-size:14px;color:var(--ink-2);text-align:center;
-    margin:12px 0 0;line-height:1.45;font-weight:500;
+    margin:10px 0 0;line-height:1.45;font-weight:500;
   }
+  .credits-note b{color:var(--rose);}
+  .credits-lead{min-height:52px;display:flex;align-items:center;justify-content:center;}
 
   .program-body{padding-top:22px;}
 
@@ -373,9 +384,8 @@
     .req-txt{font-size:17px;}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
-</style>
 
-  </head><body>/* ============ ACT TILES ============ */
+/* ============ ACT TILES ============ */
   .act-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:6px;}
 
   /* arched cards — a proscenium/stage silhouette, not a blocky square */
@@ -501,135 +511,114 @@
   }
   .fit-plan:focus{outline:none;border-color:var(--rose-lt);}
 
+  /* ---- fitness: start date + weekly rule ---- */
+  .fit-rule{
+    font-size:14px;line-height:1.5;color:var(--ink);background:var(--blush);
+    padding:12px 14px;border-radius:12px;margin:0 0 14px;
+  }
+  .fit-rule b{color:var(--rose);}
+  .fit-date{
+    width:100%;padding:14px;border:1.5px solid var(--line);border-radius:12px;
+    background:#fff;font-family:var(--ui);font-size:16px;color:var(--ink);
+  }
+  .fit-date:focus{outline:none;border-color:var(--rose-lt);}
 
+  .fit-weeks-summary{
+    display:flex;align-items:center;gap:12px;
+    background:#fff;border-radius:14px;padding:14px;margin-bottom:16px;
+  }
+  .fit-weeks-summary.win{background:var(--rose);}
+  .fws-num{font-family:var(--disp);font-size:32px;font-weight:700;color:var(--rose);line-height:1;}
+  .fws-num span{font-size:17px;color:var(--ink-3);}
+  .fit-weeks-summary.win .fws-num,
+  .fit-weeks-summary.win .fws-num span,
+  .fit-weeks-summary.win .fws-lab{color:#fff;}
+  .fws-lab{font-size:14px;font-weight:700;color:var(--ink-2);line-height:1.3;}
 
+  .fit-week{
+    background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;
+    border-left:5px solid var(--line);
+  }
+  .fit-week.hit{border-left-color:var(--rose);background:#FFF7FA;}
+  .fit-week.miss{border-left-color:#E5C7D2;}
+  .fit-week-top{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+  .fit-week-lab{font-size:13.5px;font-weight:700;color:var(--ink-2);}
+  .wk-pill{
+    margin-left:auto;font-size:12px;font-weight:800;
+    padding:4px 10px;border-radius:99px;white-space:nowrap;
+  }
+  .wk-pill.hit{background:var(--rose);color:#fff;}
+  .wk-pill.miss{background:#F3E1E7;color:#A15070;}
+  .wk-pill.open{background:var(--line);color:var(--ink-3);}
+
+  .fit-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+  .fit-day{
+    border:0;border-radius:10px;background:var(--line);cursor:pointer;
+    padding:7px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;
+    line-height:1;
+  }
+  .fit-day .fd-dow{font-size:9.5px;font-weight:800;color:var(--ink-3);letter-spacing:.02em;}
+  .fit-day .fd-num{font-size:13px;font-weight:700;color:var(--ink-2);}
+  .fit-day.on{background:var(--rose);}
+  .fit-day.on .fd-dow,.fit-day.on .fd-num{color:#fff;}
+  .fit-day.future{opacity:.35;cursor:not-allowed;}
+
+  .fit-foot{
+    font-size:13px;color:var(--ink-3);font-weight:600;
+    margin:14px 0 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .fit-reset-date{
+    background:none;border:0;color:var(--rose);font-family:var(--ui);
+    font-size:13px;font-weight:700;text-decoration:underline;cursor:pointer;padding:0;
+  }
+
+  .fit-go{
+    width:100%;margin-top:10px;padding:15px;border:0;border-radius:14px;
+    background:var(--rose);color:#fff;cursor:pointer;
+    font-family:var(--ui);font-size:16px;font-weight:800;
+  }
+  .fit-go:active{background:var(--rose-dk);}
+</style>
+<title>Rosie · First Class</title>
+</head>
+<body>
 <div class="cover">
   <div class="wrap">
-    <p class="cover-top">New Ballet San Jose · Troop 116</p>
+    <p class="cover-top">New Ballet San Jose &middot; Troop 116</p>
     <h1>Rosie</h1>
-    <p class="cover-sub">First Class · Season 2026</p>
+    <p class="cover-sub">First Class &middot; Season 2026</p>
     <div class="curtain-wrap">
       <div class="curtain-label">
         <span>Progress</span>
         <span id="curtainNum">0 / 38</span>
       </div>
       <div class="curtain-track">
-        <div class="curtain-ghost" id="curtainGhost" style="width: 26.3%;"></div>
+        <div class="curtain-ghost" id="curtainGhost" style="width:0%"></div>
         <div class="curtain-fill" id="curtainFill" style="width:0%"></div>
       </div>
-      <p class="curtain-status" id="curtainStatus">10 ready to sign off · 28 still to do</p>
+      <p class="curtain-status" id="curtainStatus">Loading…</p>
     </div>
   </div>
 </div>
 
-<div class="credits-card">
-  <p class="credits-eyebrow">Just back from Hi-Sierra</p>
-  <p class="credits-lead">Five new badges in one week</p>
-  <ul class="credits-badges">
-    <li>Wilderness Survival</li>
-    <li>Wood Carving</li>
-    <li>Small-Boat Sailing</li>
-    <li class="eagle">Sustainability ★</li>
-    <li class="eagle">First Aid ★</li>
-  </ul>
-  <p class="credits-note">16 badges total · 20 nights camping · more than a Scout needs for <b>Life</b> rank</p>
-</div>
+<button class="credits-card" id="creditsCard" title="Tap for another">
+  <p class="credits-eyebrow" id="credEyebrow"></p>
+  <p class="credits-lead" id="credLead"></p>
+  <p class="credits-note" id="credNote"></p>
+</button>
 
 <div class="program-body wrap">
 
   <div class="panel">
     <div class="panel-top">
       <h2>Your Outings</h2>
-      <span class="panel-summary" id="outSummary">9 logged · 24 nights</span>
+      <span class="panel-summary" id="outSummary"></span>
     </div>
-    <p class="panel-hint">Requirement 1a · the 10/6/3 and camping-night bars below live here.</p>
-    <div id="counters"><div class="bar">
-      <div class="bar-top">
-        <span class="bar-lab">Activities <small>· any troop outing</small></span>
-        <span class="bar-val short">9 / 10</span>
-      </div>
-      <div class="bar-track"><div class="bar-fill short" style="width:90.0%"></div></div>
-      
-    </div><div class="bar">
-      <div class="bar-top">
-        <span class="bar-lab">Held outdoors</span>
-        <span class="bar-val met">9 / 6 ✦</span>
-      </div>
-      <div class="bar-track"><div class="bar-fill " style="width:100.0%"></div></div>
-      
-    </div><div class="bar">
-      <div class="bar-top">
-        <span class="bar-lab">Overnight camping</span>
-        <span class="bar-val met">9 / 3 ✦</span>
-      </div>
-      <div class="bar-track"><div class="bar-fill " style="width:100.0%"></div></div>
-      
-    </div><div class="bar">
-      <div class="bar-top">
-        <span class="bar-lab">Camping nights <small>· Camping merit badge</small></span>
-        <span class="bar-val met">20 / 20 ✦</span>
-      </div>
-      <div class="bar-track"><div class="bar-fill " style="width:100.0%"></div></div>
-      <div class="bar-note">Slept 24 nights total; 2 long-term camps — best counts 6, each extra counts 2.</div>
-    </div></div>
+    <p class="panel-hint">Requirement 1a &middot; the 10/6/3 and camping-night bars below live here.</p>
+    <div id="counters"></div>
     <button class="panel-toggle" id="outingsToggle">Show outings</button>
     <div id="outingsInner" class="hidden" style="margin-top:14px;">
-    <div id="outingList"><button class="outing"><div class="nights "><b>1</b><span>NIGHT</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Angel Island Bike Camping</span>
-        <span class="outing-meta">May 18–19, 2024</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Beach Camping (troop)</span>
-        <span class="outing-meta">May 31–Jun 2, 2024</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights long"><b>6</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Camp Hi-Sierra 2024</span>
-        <span class="outing-meta">Jul 7–13, 2024 · long-term</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Russian River Canoeing &amp; Camping</span>
-        <span class="outing-meta">Aug 16–18, 2024</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Pinnacles Camping</span>
-        <span class="outing-meta">Sep 20–22, 2024</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>1</b><span>NIGHT</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Fall Backpacking</span>
-        <span class="outing-meta">Oct 19–20, 2024</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Bear Paw Snow Camping</span>
-        <span class="outing-meta">Feb 21–23, 2025</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Mt. Madonna Campout</span>
-        <span class="outing-meta">Apr 25–27, 2025</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing"><div class="nights long"><b>6</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Camp Hi-Sierra 2026</span>
-        <span class="outing-meta">Jul 5–11, 2026 · long-term</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing planned"><div class="nights day"><b>—</b><span>DAY</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Court of Honor</span>
-        <span class="outing-meta">Upcoming · not yet · indoor</span>
-      </span>
-      <span class="chev">›</span></button><button class="outing planned"><div class="nights "><b>2</b><span>NIGHTS</span></div>
-      <span class="outing-body">
-        <span class="outing-name">Kayaking trip</span>
-        <span class="outing-meta">Upcoming · not yet</span>
-      </span>
-      <span class="chev">›</span></button></div>
+    <div id="outingList"></div>
     <button class="add-btn" id="addBtn">+ Add an outing</button>
     <div class="add-form hidden" id="addForm">
       <input type="text" id="oName" placeholder="What was it?" autocomplete="off">
@@ -637,7 +626,7 @@
       <div class="night-row">
         <span class="night-lab">Nights slept out</span>
         <div class="stepper">
-          <button type="button" id="nMinus" aria-label="Fewer nights">−</button>
+          <button type="button" id="nMinus" aria-label="Fewer nights">&minus;</button>
           <span class="night-n" id="nVal">0</span>
           <button type="button" id="nPlus" aria-label="More nights">+</button>
         </div>
@@ -655,105 +644,10 @@
     </div>
   </div>
 
-  <div id="view"><button class="nextup" data-act="9">
-      <span class="nu-icon">👑</span>
-      <span class="nu-body">
-        <span class="nu-lab">Closest to done</span>
-        <span class="nu-main">Leadership · 1 to go</span>
-      </span>
-      <span class="nu-go">OPEN ›</span>
-    </button><div class="act-grid"><button class="act-tile " data-act="0">
-      
-      
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">❄️</span>
-      </span>
-      <span class="at-name">Camping</span>
-      <span class="at-count">0/2</span>
-    </button><button class="act-tile " data-act="1">
-      
-      <span class="at-turnin">!</span>
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">🍓</span>
-      </span>
-      <span class="at-name">Cooking</span>
-      <span class="at-count">0/5</span>
-    </button><button class="act-tile " data-act="2">
-      
-      
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">🎀</span>
-      </span>
-      <span class="at-name">Tools</span>
-      <span class="at-count">0/4</span>
-    </button><button class="act-tile " data-act="3">
-      
-      <span class="at-turnin">!</span>
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">💫</span>
-      </span>
-      <span class="at-name">Navigation</span>
-      <span class="at-count">0/2</span>
-    </button><button class="act-tile " data-act="4">
-      
-      
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">🌷</span>
-      </span>
-      <span class="at-name">Nature</span>
-      <span class="at-count">0/4</span>
-    </button><button class="act-tile " data-act="5">
-      
-      <span class="at-turnin">!</span>
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">🐚</span>
-      </span>
-      <span class="at-name">Aquatics</span>
-      <span class="at-count">0/5</span>
-    </button><button class="act-tile " data-act="6">
-      
-      <span class="at-turnin">!</span>
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">💖</span>
-      </span>
-      <span class="at-name">First Aid</span>
-      <span class="at-count">0/6</span>
-    </button><button class="act-tile " data-act="7">
-      
-      
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">🩰</span>
-      </span>
-      <span class="at-name">Fitness</span>
-      <span class="at-count">0/2</span>
-    </button><button class="act-tile " data-act="8">
-      
-      <span class="at-turnin">!</span>
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">🕊️</span>
-      </span>
-      <span class="at-name">Citizenship</span>
-      <span class="at-count">0/4</span>
-    </button><button class="act-tile " data-act="9">
-      
-      
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">👑</span>
-      </span>
-      <span class="at-name">Leadership</span>
-      <span class="at-count">0/1</span>
-    </button><button class="act-tile " data-act="10">
-      
-      
-      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
-        <span class="at-ring-inner">🎭</span>
-      </span>
-      <span class="at-name">Finale</span>
-      <span class="at-count">0/3</span>
-    </button></div></div>
+  <div id="view"></div>
 
   <div class="foot">
-    <p class="foot-rule">Troop 116 · Season 2026</p>
+    <p class="foot-rule">Troop 116 &middot; Season 2026</p>
     <div class="foot-row">
       <button class="foot-btn" id="exportBtn">Save Backup</button>
       <button class="foot-btn" id="importBtn">Load Backup</button>
@@ -872,7 +766,7 @@ let state = {
   done:Object.assign({},EVIDENCE), outings:SEED.slice(),
   act:null,                 // which Act tile is open, or null for the grid
   outingsOpen:false,        // outings list collapsed by default
-  fitness:{ plan:"", days:{} },   // First Class 8a/8b: 5 days/wk x 4 wks + reflection
+  fitness:{ plan:"", startDate:"", days:{} },  // 8a: 5 days/wk x 4 wks, from any start date
 };
 
 const $ = s => document.querySelector(s);
@@ -938,6 +832,55 @@ function signedCount(){
   return Object.values(state.done).filter(v=>v===2).length+(req1aState()===2?1:0);
 }
 function readyCount(){ return Object.values(state.done).filter(v=>v===1).length; }
+
+
+/* ---------- rotating banner ----------
+   Most of these are computed from her real numbers, so they stay true as she
+   goes. A few are Scouting quotes / encouragement for variety. */
+function buildMessages(){
+  const s = stats();
+  const signed = signedCount(), ready = readyCount();
+  const left = TOTAL - signed - ready;
+  const m = [];
+
+  // --- her actual record ---
+  m.push({e:"Her record so far", l:"16 merit badges", n:"That's more than the <b>11</b> a Scout needs for <b>Life</b> rank. You are not behind — you're ahead."});
+  m.push({e:"Nights under the sky", l:s.nights+" camping nights", n:"Enough for the <b>Camping</b> merit badge, one of the 14 required for Eagle."});
+  m.push({e:"Outings logged", l:s.activities+" trips, "+s.overnight+" overnights", n:"Snow camping. Canoeing. Backpacking. Sailing. You've done more than most Scouts twice your age."});
+  m.push({e:"Eagle-required badges", l:"First Aid &amp; Sustainability", n:"Two of the 14 Eagle badges already banked. Twelve to go — and you have years."});
+
+  // --- progress-aware ---
+  if(ready > 0)
+    m.push({e:"Waiting on a signature", l:ready+" requirement"+(ready>1?"s":"")+" already earned", n:"You've <i>done</i> these. They just need a Scoutmaster's pen. Bring the list to your next meeting."});
+  if(signed > 0)
+    m.push({e:"Signed off", l:signed+" of "+TOTAL+" complete", n:"Every star on this page is something you actually went out and did."});
+  if(left > 0 && left <= 10)
+    m.push({e:"Almost there", l:"Only "+left+" left to start", n:"First Class is the rank that turns a Scout into a leader. You can see the finish line."});
+  if(s.activities >= 10 && s.outdoor >= 6 && s.overnight >= 3)
+    m.push({e:"Requirement 1a", l:"Complete", n:"Ten activities, six outdoors, three overnights. Done and dusted."});
+
+  // --- Scouting spirit ---
+  m.push({e:"The Scout Motto", l:"Be Prepared", n:"Baden-Powell was asked, \"Prepared for what?\" He said: <i>\"Why, for any old thing.\"</i>"});
+  m.push({e:"The Scout Slogan", l:"Do a Good Turn Daily", n:"Not a grand gesture. Just one small, deliberate kindness — every single day."});
+  m.push({e:"Baden-Powell", l:"\u201cTry and leave this world a little better than you found it.\u201d", n:"From his last message to Scouts."});
+  m.push({e:"On the trail", l:"\u201cThe real way to gain happiness is to give it to others.\u201d", n:"Robert Baden-Powell, founder of Scouting."});
+  m.push({e:"Something to remember", l:"A First Class Scout can take care of herself \u2014 and someone else", n:"That's the whole point of this rank. Not badges. Capability."});
+  m.push({e:"Why this rank matters", l:"First Class is the turning point", n:"Studies show Scouts who reach First Class in their first year are far more likely to stay — and to reach Eagle."});
+  m.push({e:"On the hard ones", l:"The requirements you're dreading are the ones worth doing", n:"Nobody remembers the easy merit badge. You'll remember being head cook."});
+  m.push({e:"Ballet &amp; Scouting", l:"Both reward the same thing", n:"Show up. Repeat it until it's yours. Then do it when it counts."});
+
+  return m;
+}
+
+let credIdx = 0;
+function renderCredits(){
+  const msgs = buildMessages();
+  if(credIdx >= msgs.length) credIdx = 0;
+  const m = msgs[credIdx];
+  $("#credEyebrow").innerHTML = m.e;
+  $("#credLead").innerHTML = m.l;
+  $("#credNote").innerHTML = m.n;
+}
 
 function renderCover(){
   const signed=signedCount(), ready=readyCount();
@@ -1094,40 +1037,120 @@ function nearestAct(){
   return best;
 }
 
+function fitISO(d){
+  // LOCAL date, not UTC. toISOString() rolls over to tomorrow after ~5pm in
+  // California, which would log workouts on the wrong day.
+  return d.getFullYear() + "-" +
+         String(d.getMonth()+1).padStart(2,"0") + "-" +
+         String(d.getDate()).padStart(2,"0");
+}
+function fitAddDays(iso,n){
+  const d=new Date(iso+"T12:00:00"); d.setDate(d.getDate()+n); return fitISO(d);
+}
+function fitPretty(iso){
+  return new Date(iso+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
+function fitDow(iso){
+  return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][new Date(iso+"T12:00:00").getDay()];
+}
+
 function fitnessHTML(){
-  const days = state.fitness.days;
-  const dayLabels = ["S","M","T","W","T","F","S"];
-  let totalOn = 0, weeksHtml = "";
-  for(let w=1; w<=4; w++){
-    let weekOn = 0, cells = "";
-    for(let d=0; d<7; d++){
-      const key = w+"-"+d, on = !!days[key];
-      if(on){ weekOn++; totalOn++; }
-      cells += `<button type="button" class="fit-day ${on?"on":""}" data-fitday="${key}">${dayLabels[d]}</button>`;
-    }
-    weeksHtml += `<div class="fit-week">
-      <div class="fit-week-lab">WEEK ${w} &middot; ${weekOn}/5 days</div>
-      <div class="fit-days">${cells}</div></div>`;
+  const f = state.fitness;
+
+  if(!f.startDate){
+    return `<div class="fit-card">
+      <h4>Fitness Log &middot; Requirement 8a</h4>
+      <p class="fit-rule"><b>The rule:</b> 30+ active minutes a day, <b>5 days in each week</b>, for <b>4 weeks straight</b>. All four weeks must hit 5 &mdash; a good week can't make up for a short one.</p>
+      <p class="fit-plan-lab">Pick the day you start</p>
+      <input type="date" class="fit-date" id="fitStart" value="${fitISO(new Date())}">
+      <button type="button" class="fit-go" id="fitGo">Start my 4 weeks &rarr;</button>
+      <p class="fit-hint">Start any day you like &mdash; Wednesday, Saturday, whatever. Your weeks count from that day, not from Sunday.</p>
+    </div>`;
   }
-  const met = totalOn >= 20;
+
+  const today = fitISO(new Date());
+  let totalOn = 0, weeksDone = 0, weeksHtml = "";
+
+  for(let w=0; w<4; w++){
+    let weekOn=0, cells="", weekEnded=true;
+    for(let d=0; d<7; d++){
+      const iso = fitAddDays(f.startDate, w*7+d);
+      const on = !!f.days[iso];
+      const future = iso > today;
+      if(future) weekEnded = false;
+      if(on){ weekOn++; totalOn++; }
+      cells += `<button type="button" class="fit-day ${on?"on":""} ${future?"future":""}"
+        ${future?"":`data-fitday="${iso}"`}>
+        <span class="fd-dow">${fitDow(iso)}</span>
+        <span class="fd-num">${fitPretty(iso).split(" ")[1]}</span>
+      </button>`;
+    }
+    const hit = weekOn >= 5;
+    if(hit) weeksDone++;
+    const status = hit ? `<span class="wk-pill hit">&#10003; 5 of 5</span>`
+      : weekEnded ? `<span class="wk-pill miss">Only ${weekOn} of 5</span>`
+      : `<span class="wk-pill open">${weekOn} of 5 so far</span>`;
+    const wkStart = fitAddDays(f.startDate, w*7);
+    weeksHtml += `<div class="fit-week ${hit?"hit":weekEnded?"miss":""}">
+      <div class="fit-week-top">
+        <span class="fit-week-lab">Week ${w+1} &middot; from ${fitPretty(wkStart)}</span>
+        ${status}
+      </div>
+      <div class="fit-days">${cells}</div>
+    </div>`;
+  }
+
+  const allFour = weeksDone === 4;
   return `<div class="fit-card">
     <h4>Fitness Log &middot; Requirement 8a</h4>
-    <p class="fit-hint">30+ active minutes a day, aiming for 5 days a week across 4 weeks. Tap a day once you've done it.</p>
-    <div class="fit-target">
-      <span class="ft-lab">Days active</span>
-      <span class="ft-val ${met?"met":"short"}">${totalOn} / 20</span>
+    <p class="fit-rule"><b>The rule:</b> 30+ active minutes a day, <b>5 days in each week</b>, for <b>4 weeks straight</b>. All four weeks must hit 5 &mdash; a good week can't make up for a short one.</p>
+
+    <div class="fit-weeks-summary ${allFour?"win":""}">
+      <span class="fws-num">${weeksDone}<span>/4</span></span>
+      <span class="fws-lab">${allFour?"All four weeks hit 5 days &mdash; 8a is done!":"weeks with 5+ days"}</span>
     </div>
-    <div class="fit-bar-track"><div class="fit-bar-fill" style="width:${Math.min(100,totalOn/20*100)}%"></div></div>
+
     ${weeksHtml}
+
+    <p class="fit-foot">${totalOn} active days logged &middot; started ${fitPretty(f.startDate)}
+      <button type="button" class="fit-reset-date" id="fitResetDate">change start date</button></p>
+
     <p class="fit-plan-lab">Requirement 8b &middot; Your reflection &amp; goal</p>
-    <textarea class="fit-plan" id="fitPlan" rows="3" placeholder="What was hard? What went well? What's your goal for staying active?">${state.fitness.plan||""}</textarea>
+    <textarea class="fit-plan" id="fitPlan" rows="3" placeholder="What was hard? What went well? What's your goal for staying active?">${f.plan||""}</textarea>
   </div>`;
 }
+
 function wireFitness(){
+  const sd = $("#fitStart");
+  const go = $("#fitGo");
+  // iOS Safari's native date wheel doesn't reliably fire "change" — so accept
+  // "input" too, and give an explicit button that never depends on either.
+  const commit = () => {
+    const v = sd && sd.value;
+    if(v){ state.fitness.startDate = v; render(); save(); }
+  };
+  if(sd){
+    sd.onchange = commit;
+    sd.oninput  = commit;
+  }
+  if(go) go.onclick = commit;
+  const rd = $("#fitResetDate");
+  if(rd) rd.onclick = () => {
+    const logged = Object.keys(state.fitness.days).length;
+    const msg = logged
+      ? `Change your start date?\n\nYou have ${logged} day${logged>1?"s":""} logged. ` +
+        `They stay saved on their real dates — but any that fall outside the new ` +
+        `4-week window won't count toward 8a.`
+      : "Pick a different start date?";
+    if(!confirm(msg)) return;
+    state.fitness.startDate = "";   // days are NOT wiped
+    render(); save();
+  };
   document.querySelectorAll("[data-fitday]").forEach(b=>{
     b.onclick = () => {
       const k = b.dataset.fitday;
-      state.fitness.days[k] = !state.fitness.days[k];
+      if(state.fitness.days[k]) delete state.fitness.days[k];
+      else state.fitness.days[k] = true;
       render(); save();
     };
   });
@@ -1147,7 +1170,7 @@ function renderTiles(){
     html += `<button class="nextup" data-act="${near.i}">
       <span class="nu-icon">${ACT_META[near.i].icon}</span>
       <span class="nu-body">
-        <span class="nu-lab">Closest to done</span>
+        <span class="nu-lab">Closest to finishing</span>
         <span class="nu-main">${a} &middot; ${near.left} to go</span>
       </span>
       <span class="nu-go">OPEN &rsaquo;</span>
@@ -1160,7 +1183,7 @@ function renderTiles(){
     const pct = a.total ? (a.signed/a.total*100) : 0;
     html += `<button class="act-tile ${clear?"clear":""}" data-act="${i}">
       ${clear?'<span class="at-badge">&#9733;</span>':""}
-      ${a.ready?'<span class="at-turnin">!</span>':""}
+      ${a.ready?`<span class="at-turnin" title="${a.ready} waiting for a signature">&#9998;</span>`:""}
       <span class="at-ring" style="background:conic-gradient(var(--rose) ${pct}%, var(--line) 0);">
         <span class="at-ring-inner">${ACT_META[i].icon}</span>
       </span>
@@ -1221,7 +1244,23 @@ function reqHTML(id,text,note,tag){
   </button>`;
 }
 
+// If she's logged 5+ days in all four weeks, 8a is earned — flag it for a
+// signature. Must run BEFORE anything renders, or the 8a card is built stale.
+function syncFitnessTo8a(){
+  const f = state.fitness;
+  if(!f.startDate) return;
+  let weeksDone = 0;
+  for(let w=0; w<4; w++){
+    let n=0;
+    for(let d=0; d<7; d++) if(f.days[fitAddDays(f.startDate, w*7+d)]) n++;
+    if(n >= 5) weeksDone++;
+  }
+  if(weeksDone === 4 && st("8a") === 0) state.done["8a"] = 1;
+}
+
 function render(){
+  syncFitnessTo8a();
+  renderCredits();
   renderCover();
   renderBars();
   renderOutings();
@@ -1242,12 +1281,20 @@ $("#outingsToggle").onclick = () => {
   render(); save();
 };
 
+$("#creditsCard").onclick = () => {
+  credIdx++;
+  renderCredits();
+};
+
+// start on a different message each time she opens the app
+credIdx = Math.floor(Math.random() * 8);
+
 $("#reset").onclick=()=>{
   state.done=Object.assign({},EVIDENCE);
   state.outings=SEED.slice();
   state.act=null;
   state.outingsOpen=false;
-  state.fitness={plan:"",days:{}};
+  state.fitness={plan:"",startDate:"",days:{}};
   render();save();
 };
 
@@ -1280,4 +1327,5 @@ $("#importFile").onchange=e=>{
 // logPanel toggle must exist in DOM
 load();
 </script>
-</body></html>
+</body>
+</html>

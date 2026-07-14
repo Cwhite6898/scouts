@@ -1,7 +1,9 @@
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- saved from url=(0063)file:///Users/catherinewhite/Downloads/rosie-first-class_7.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./rosie-first-class_files/css2" rel="stylesheet">
 
 <style>
   :root{
@@ -373,32 +375,58 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
 
-  /* ============ ACT TILES ============ */
-  .act-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:6px;}
+  </head><body>/* ============ ACT TILES ============ */
+  .act-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:6px;}
+
+  /* arched cards — a proscenium/stage silhouette, not a blocky square */
   .act-tile{
-    background:var(--card);border:0;border-radius:18px;padding:16px 12px;
+    background:linear-gradient(180deg,#FFFFFF 0%,#FDF2F6 100%);
+    border:0;
+    border-radius:110px 110px 24px 24px;
+    padding:24px 14px 20px;
     cursor:pointer;font:inherit;color:inherit;position:relative;
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    box-shadow:0 2px 12px rgba(43,32,40,.06);text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    box-shadow:0 4px 18px rgba(194,24,91,.10);
+    text-align:center;min-height:196px;justify-content:flex-start;
   }
   .act-tile:active{transform:scale(.97);}
-  .act-tile .at-icon{font-size:26px;line-height:1;}
-  .act-tile .at-name{
-    font-family:var(--disp);font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.25;
-  }
-  .act-tile .at-track{width:100%;height:7px;background:var(--line);border-radius:99px;overflow:hidden;}
-  .act-tile .at-fill{height:100%;background:var(--rose);border-radius:99px;transition:width .5s;}
-  .act-tile .at-count{font-size:12px;font-weight:700;color:var(--ink-3);}
-  .act-tile.clear{background:var(--blush);}
-  .act-tile.clear .at-fill{background:var(--rose);}
-  .act-tile.clear .at-count{color:var(--rose);}
-  .act-tile .at-turnin{
-    position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;
-    background:var(--gold-lt);color:#5C4200;font-size:12px;font-weight:800;
+
+  /* circular progress ring around the icon */
+  .at-ring{
+    width:74px;height:74px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 2px 6px rgba(201,144,0,.35);animation:beat 2s ease-in-out infinite;
+    flex:0 0 auto;
   }
-  .act-tile .at-badge{position:absolute;top:8px;left:8px;font-size:14px;}
+  .at-ring-inner{
+    width:60px;height:60px;border-radius:50%;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:27px;line-height:1;
+    box-shadow:inset 0 1px 4px rgba(194,24,91,.08);
+  }
+
+  .act-tile .at-name{
+    font-family:var(--disp);font-size:18px;font-weight:700;color:var(--ink);
+    line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    max-width:100%;
+  }
+  .act-tile .at-count{
+    font-size:13px;font-weight:700;color:var(--rose);
+    background:var(--blush);padding:4px 12px;border-radius:99px;
+  }
+  .act-tile.clear{
+    background:linear-gradient(180deg,#FFF6F9 0%,#FBE0EA 100%);
+    box-shadow:0 4px 20px rgba(194,24,91,.18);
+  }
+  .act-tile.clear .at-count{background:var(--rose);color:#fff;}
+
+  .act-tile .at-turnin{
+    position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;
+    background:var(--gold-lt);color:#5C4200;font-size:14px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 8px rgba(201,144,0,.4);animation:beat 2s ease-in-out infinite;
+  }
+  .act-tile .at-badge{position:absolute;top:12px;left:12px;font-size:17px;color:var(--rose);}
 
   .nextup{
     display:flex;align-items:center;gap:12px;width:100%;text-align:left;
@@ -477,19 +505,19 @@
 
 <div class="cover">
   <div class="wrap">
-    <p class="cover-top">New Ballet San Jose &middot; Troop 116</p>
+    <p class="cover-top">New Ballet San Jose · Troop 116</p>
     <h1>Rosie</h1>
-    <p class="cover-sub">First Class &middot; Season 2026</p>
+    <p class="cover-sub">First Class · Season 2026</p>
     <div class="curtain-wrap">
       <div class="curtain-label">
         <span>Progress</span>
         <span id="curtainNum">0 / 38</span>
       </div>
       <div class="curtain-track">
-        <div class="curtain-ghost" id="curtainGhost" style="width:0%"></div>
+        <div class="curtain-ghost" id="curtainGhost" style="width: 26.3%;"></div>
         <div class="curtain-fill" id="curtainFill" style="width:0%"></div>
       </div>
-      <p class="curtain-status" id="curtainStatus">Loading…</p>
+      <p class="curtain-status" id="curtainStatus">10 ready to sign off · 28 still to do</p>
     </div>
   </div>
 </div>
@@ -501,10 +529,10 @@
     <li>Wilderness Survival</li>
     <li>Wood Carving</li>
     <li>Small-Boat Sailing</li>
-    <li class="eagle">Sustainability &starf;</li>
-    <li class="eagle">First Aid &starf;</li>
+    <li class="eagle">Sustainability ★</li>
+    <li class="eagle">First Aid ★</li>
   </ul>
-  <p class="credits-note">16 badges total &middot; 20 nights camping &middot; more than a Scout needs for <b>Life</b> rank</p>
+  <p class="credits-note">16 badges total · 20 nights camping · more than a Scout needs for <b>Life</b> rank</p>
 </div>
 
 <div class="program-body wrap">
@@ -512,13 +540,96 @@
   <div class="panel">
     <div class="panel-top">
       <h2>Your Outings</h2>
-      <span class="panel-summary" id="outSummary"></span>
+      <span class="panel-summary" id="outSummary">9 logged · 24 nights</span>
     </div>
-    <p class="panel-hint">Requirement 1a &middot; the 10/6/3 and camping-night bars below live here.</p>
-    <div id="counters"></div>
+    <p class="panel-hint">Requirement 1a · the 10/6/3 and camping-night bars below live here.</p>
+    <div id="counters"><div class="bar">
+      <div class="bar-top">
+        <span class="bar-lab">Activities <small>· any troop outing</small></span>
+        <span class="bar-val short">9 / 10</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill short" style="width:90.0%"></div></div>
+      
+    </div><div class="bar">
+      <div class="bar-top">
+        <span class="bar-lab">Held outdoors</span>
+        <span class="bar-val met">9 / 6 ✦</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill " style="width:100.0%"></div></div>
+      
+    </div><div class="bar">
+      <div class="bar-top">
+        <span class="bar-lab">Overnight camping</span>
+        <span class="bar-val met">9 / 3 ✦</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill " style="width:100.0%"></div></div>
+      
+    </div><div class="bar">
+      <div class="bar-top">
+        <span class="bar-lab">Camping nights <small>· Camping merit badge</small></span>
+        <span class="bar-val met">20 / 20 ✦</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill " style="width:100.0%"></div></div>
+      <div class="bar-note">Slept 24 nights total; 2 long-term camps — best counts 6, each extra counts 2.</div>
+    </div></div>
     <button class="panel-toggle" id="outingsToggle">Show outings</button>
     <div id="outingsInner" class="hidden" style="margin-top:14px;">
-    <div id="outingList"></div>
+    <div id="outingList"><button class="outing"><div class="nights "><b>1</b><span>NIGHT</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Angel Island Bike Camping</span>
+        <span class="outing-meta">May 18–19, 2024</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Beach Camping (troop)</span>
+        <span class="outing-meta">May 31–Jun 2, 2024</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights long"><b>6</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Camp Hi-Sierra 2024</span>
+        <span class="outing-meta">Jul 7–13, 2024 · long-term</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Russian River Canoeing &amp; Camping</span>
+        <span class="outing-meta">Aug 16–18, 2024</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Pinnacles Camping</span>
+        <span class="outing-meta">Sep 20–22, 2024</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>1</b><span>NIGHT</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Fall Backpacking</span>
+        <span class="outing-meta">Oct 19–20, 2024</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Bear Paw Snow Camping</span>
+        <span class="outing-meta">Feb 21–23, 2025</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights "><b>2</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Mt. Madonna Campout</span>
+        <span class="outing-meta">Apr 25–27, 2025</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing"><div class="nights long"><b>6</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Camp Hi-Sierra 2026</span>
+        <span class="outing-meta">Jul 5–11, 2026 · long-term</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing planned"><div class="nights day"><b>—</b><span>DAY</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Court of Honor</span>
+        <span class="outing-meta">Upcoming · not yet · indoor</span>
+      </span>
+      <span class="chev">›</span></button><button class="outing planned"><div class="nights "><b>2</b><span>NIGHTS</span></div>
+      <span class="outing-body">
+        <span class="outing-name">Kayaking trip</span>
+        <span class="outing-meta">Upcoming · not yet</span>
+      </span>
+      <span class="chev">›</span></button></div>
     <button class="add-btn" id="addBtn">+ Add an outing</button>
     <div class="add-form hidden" id="addForm">
       <input type="text" id="oName" placeholder="What was it?" autocomplete="off">
@@ -526,7 +637,7 @@
       <div class="night-row">
         <span class="night-lab">Nights slept out</span>
         <div class="stepper">
-          <button type="button" id="nMinus" aria-label="Fewer nights">&minus;</button>
+          <button type="button" id="nMinus" aria-label="Fewer nights">−</button>
           <span class="night-n" id="nVal">0</span>
           <button type="button" id="nPlus" aria-label="More nights">+</button>
         </div>
@@ -544,10 +655,105 @@
     </div>
   </div>
 
-  <div id="view"></div>
+  <div id="view"><button class="nextup" data-act="9">
+      <span class="nu-icon">👑</span>
+      <span class="nu-body">
+        <span class="nu-lab">Closest to done</span>
+        <span class="nu-main">Leadership · 1 to go</span>
+      </span>
+      <span class="nu-go">OPEN ›</span>
+    </button><div class="act-grid"><button class="act-tile " data-act="0">
+      
+      
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">❄️</span>
+      </span>
+      <span class="at-name">Camping</span>
+      <span class="at-count">0/2</span>
+    </button><button class="act-tile " data-act="1">
+      
+      <span class="at-turnin">!</span>
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">🍓</span>
+      </span>
+      <span class="at-name">Cooking</span>
+      <span class="at-count">0/5</span>
+    </button><button class="act-tile " data-act="2">
+      
+      
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">🎀</span>
+      </span>
+      <span class="at-name">Tools</span>
+      <span class="at-count">0/4</span>
+    </button><button class="act-tile " data-act="3">
+      
+      <span class="at-turnin">!</span>
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">💫</span>
+      </span>
+      <span class="at-name">Navigation</span>
+      <span class="at-count">0/2</span>
+    </button><button class="act-tile " data-act="4">
+      
+      
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">🌷</span>
+      </span>
+      <span class="at-name">Nature</span>
+      <span class="at-count">0/4</span>
+    </button><button class="act-tile " data-act="5">
+      
+      <span class="at-turnin">!</span>
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">🐚</span>
+      </span>
+      <span class="at-name">Aquatics</span>
+      <span class="at-count">0/5</span>
+    </button><button class="act-tile " data-act="6">
+      
+      <span class="at-turnin">!</span>
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">💖</span>
+      </span>
+      <span class="at-name">First Aid</span>
+      <span class="at-count">0/6</span>
+    </button><button class="act-tile " data-act="7">
+      
+      
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">🩰</span>
+      </span>
+      <span class="at-name">Fitness</span>
+      <span class="at-count">0/2</span>
+    </button><button class="act-tile " data-act="8">
+      
+      <span class="at-turnin">!</span>
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">🕊️</span>
+      </span>
+      <span class="at-name">Citizenship</span>
+      <span class="at-count">0/4</span>
+    </button><button class="act-tile " data-act="9">
+      
+      
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">👑</span>
+      </span>
+      <span class="at-name">Leadership</span>
+      <span class="at-count">0/1</span>
+    </button><button class="act-tile " data-act="10">
+      
+      
+      <span class="at-ring" style="background:conic-gradient(var(--rose) 0%, var(--line) 0);">
+        <span class="at-ring-inner">🎭</span>
+      </span>
+      <span class="at-name">Finale</span>
+      <span class="at-count">0/3</span>
+    </button></div></div>
 
   <div class="foot">
-    <p class="foot-rule">Troop 116 &middot; Season 2026</p>
+    <p class="foot-rule">Troop 116 · Season 2026</p>
     <div class="foot-row">
       <button class="foot-btn" id="exportBtn">Save Backup</button>
       <button class="foot-btn" id="importBtn">Load Backup</button>
@@ -629,17 +835,17 @@ const REQS = [
 const TOTAL = REQS.reduce((n,[,items])=>n+items.length,0) + 1; // +1 for 1a (live)
 
 const ACT_META = [
-  {label:"Act I",    icon:"\u2744"},   // Camping & Outdoor Ethics
-  {label:"Act II",   icon:"\uD83C\uDF73"}, // Cooking
-  {label:"Act III",  icon:"\uD83E\uDE93"}, // Tools
-  {label:"Act IV",   icon:"\uD83E\uDDED"}, // Navigation
-  {label:"Act V",    icon:"\uD83C\uDF3F"}, // Nature
-  {label:"Act VI",   icon:"\uD83D\uDEA3"}, // Aquatics
-  {label:"Act VII",  icon:"\u2695"},   // First Aid
-  {label:"Act VIII", icon:"\uD83E\uDD70"}, // Fitness (ballerina-ish: use a heart)
-  {label:"Act IX",   icon:"\uD83C\uDFF5"}, // Citizenship
-  {label:"Act X",    icon:"\uD83C\uDF9F"}, // Leadership
-  {label:"Finale",   icon:"\u2B50"},   // Scout Spirit & Sign-Off
+  {label:"Act I",    short:"Camping",    icon:"\u2744\uFE0F"},      // snowflake
+  {label:"Act II",   short:"Cooking",    icon:"\uD83C\uDF53"},       // strawberry
+  {label:"Act III",  short:"Tools",      icon:"\uD83C\uDF80"},       // ribbon
+  {label:"Act IV",   short:"Navigation", icon:"\uD83D\uDCAB"},       // sparkle-star
+  {label:"Act V",    short:"Nature",     icon:"\uD83C\uDF37"},       // tulip
+  {label:"Act VI",   short:"Aquatics",   icon:"\uD83D\uDC1A"},       // shell
+  {label:"Act VII",  short:"First Aid",  icon:"\uD83D\uDC96"},       // sparkling heart
+  {label:"Act VIII", short:"Fitness",    icon:"\uD83E\uDE70"},       // ballet shoes
+  {label:"Act IX",   short:"Citizenship",icon:"\uD83D\uDD4A\uFE0F"}, // dove
+  {label:"Act X",    short:"Leadership", icon:"\uD83D\uDC51"},       // crown
+  {label:"Finale",   short:"Finale",     icon:"\uD83C\uDFAD"},       // theatre masks
 ];
 const KEY = "rosie_first_class_v8";
 
@@ -955,9 +1161,10 @@ function renderTiles(){
     html += `<button class="act-tile ${clear?"clear":""}" data-act="${i}">
       ${clear?'<span class="at-badge">&#9733;</span>':""}
       ${a.ready?'<span class="at-turnin">!</span>':""}
-      <span class="at-icon">${ACT_META[i].icon}</span>
-      <span class="at-name">${ACT_META[i].label}<br>${a.cat}</span>
-      <span class="at-track"><span class="at-fill" style="width:${pct}%"></span></span>
+      <span class="at-ring" style="background:conic-gradient(var(--rose) ${pct}%, var(--line) 0);">
+        <span class="at-ring-inner">${ACT_META[i].icon}</span>
+      </span>
+      <span class="at-name">${ACT_META[i].short}</span>
       <span class="at-count">${a.signed}/${a.total}${clear?" &#10003;":""}</span>
     </button>`;
   });
@@ -1073,3 +1280,4 @@ $("#importFile").onchange=e=>{
 // logPanel toggle must exist in DOM
 load();
 </script>
+</body></html>

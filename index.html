@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rosie · First Class</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* warmer, brighter, higher contrast than the old parchment */
+    --bg:#FDF7F8;
+    --card:#FFFFFF;
+    --card-2:#FFF4F6;
+
+    --rose:#C2185B;          /* punchier — reads on a bright screen */
+    --rose-dk:#8E1147;
+    --rose-lt:#F06292;
+    --blush:#FCE4EC;
+    --blush-2:#F8BBD0;
+
+    --gold:#C99000;
+    --gold-lt:#FFC93C;
+    --gold-bg:#FFF8E1;
+
+    --ink:#2B2028;           /* near-black, not brown — much crisper */
+    --ink-2:#5C4F58;         /* readable secondary, NOT washed out */
+    --ink-3:#8B7E86;
+
+    --line:#F0DDE3;
+
+    --disp:"Playfair Display",Georgia,serif;
+    --ui:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{overflow-x:hidden;max-width:100%;}
+  input,textarea,select{font-size:16px;}
+
+  body{
+    margin:0;
+    font-family:var(--ui);
+    font-size:17px;
+    line-height:1.55;
+    color:var(--ink);
+    background:var(--bg);
+    padding-bottom:90px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:600px;margin:0 auto;padding:0 16px;}
+
+  /* ============ COVER ============ */
+  .cover{
+    background:linear-gradient(160deg,#D81B60 0%,#AD1457 55%,#880E4F 100%);
+    color:#fff;
+    padding:30px 0 26px;
+    position:relative;overflow:hidden;
+    border-radius:0 0 28px 28px;
+    box-shadow:0 8px 28px rgba(194,24,91,.28);
+  }
+  .cover::before{
+    content:"❄";position:absolute;right:-24px;top:-32px;
+    font-size:190px;opacity:.09;line-height:1;pointer-events:none;
+  }
+  .cover::after{
+    content:"✿";position:absolute;left:-26px;bottom:-46px;
+    font-size:170px;opacity:.07;line-height:1;pointer-events:none;
+  }
+  .cover-top{
+    font-family:var(--ui);font-size:11px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;
+    color:rgba(255,255,255,.72);text-align:center;margin:0 0 14px;
+  }
+  .cover h1{
+    font-family:var(--disp);font-size:42px;font-weight:700;
+    text-align:center;margin:0;line-height:1.1;letter-spacing:-.01em;
+  }
+  .cover-sub{
+    font-family:var(--ui);font-size:15px;font-weight:600;
+    text-align:center;color:rgba(255,255,255,.85);margin:6px 0 22px;
+    letter-spacing:.02em;
+  }
+
+  /* curtain / progress */
+  .curtain-wrap{padding:0 20px;}
+  .curtain-label{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:13px;font-weight:700;color:rgba(255,255,255,.8);
+    margin-bottom:9px;letter-spacing:.02em;
+  }
+  .curtain-track{
+    height:14px;background:rgba(0,0,0,.22);
+    border-radius:99px;position:relative;overflow:hidden;
+  }
+  .curtain-fill{
+    height:100%;border-radius:99px;
+    background:linear-gradient(90deg,var(--gold-lt),#FFE082);
+    transition:width .7s cubic-bezier(.34,1.2,.64,1);
+    box-shadow:0 0 12px rgba(255,201,60,.5);
+  }
+  .curtain-ghost{
+    position:absolute;top:0;left:0;height:100%;border-radius:99px;
+    background:rgba(255,255,255,.28);
+    transition:width .7s cubic-bezier(.34,1.2,.64,1);
+  }
+  .curtain-status{
+    font-size:15px;font-weight:600;color:#fff;
+    text-align:center;margin:12px 0 0;
+  }
+
+  /* ============ CREDITS ============ */
+  .credits-card{
+    background:var(--card);
+    margin:-16px 16px 0;
+    padding:18px 18px 16px;
+    border-radius:20px;
+    box-shadow:0 4px 20px rgba(194,24,91,.12);
+    position:relative;z-index:2;
+    transition:background .3s, box-shadow .3s, transform .3s;
+  }
+  .credits-card.live{
+    background:linear-gradient(160deg,#FFF4F6 0%,#FCE4EC 100%);
+    box-shadow:0 6px 24px rgba(194,24,91,.2);
+    animation:creditsPulse .55s cubic-bezier(.34,1.2,.64,1);
+  }
+  @keyframes creditsPulse{
+    0%{transform:scale(1);}
+    40%{transform:scale(1.02);}
+    100%{transform:scale(1);}
+  }
+  .credits-eyebrow{
+    font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--rose);margin:0 0 6px;text-align:center;
+  }
+  .credits-lead{
+    font-family:var(--disp);font-size:20px;font-weight:600;
+    color:var(--ink);text-align:center;margin:0 0 12px;line-height:1.3;
+  }
+  .credits-card.live .credits-lead{margin-bottom:0;}
+  .credits-sub{
+    font-family:var(--ui);font-size:14.5px;font-weight:600;
+    color:var(--ink-2);text-align:center;margin:8px 0 0;line-height:1.4;
+  }
+  .credits-badges{
+    display:flex;flex-wrap:wrap;gap:7px;justify-content:center;
+    list-style:none;margin:0;padding:0;
+  }
+  .credits-badges li{
+    font-size:14px;font-weight:600;color:var(--rose);
+    background:var(--blush);padding:6px 12px;border-radius:99px;
+  }
+  .credits-badges li.eagle{
+    background:var(--gold-bg);color:var(--gold);
+  }
+  .credits-note{
+    font-size:14px;color:var(--ink-2);text-align:center;
+    margin:12px 0 0;line-height:1.45;font-weight:500;
+  }
+
+  .program-body{padding-top:22px;}
+
+  /* ============ CARDS ============ */
+  .panel{
+    background:var(--card);
+    border-radius:20px;
+    padding:20px 18px 14px;
+    margin-bottom:18px;
+    box-shadow:0 2px 14px rgba(43,32,40,.06);
+  }
+  .panel h2{
+    font-family:var(--disp);font-size:20px;font-weight:700;
+    color:var(--ink);margin:0 0 4px;
+  }
+  .panel-hint{font-size:15px;color:var(--ink-2);margin:0 0 16px;line-height:1.5;}
+
+  /* progress bars */
+  .bar{margin-bottom:15px;}
+  .bar-top{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+  .bar-lab{font-size:15px;font-weight:600;color:var(--ink);}
+  .bar-lab small{color:var(--ink-3);font-weight:500;font-size:13px;}
+  .bar-val{margin-left:auto;font-size:15px;font-weight:800;white-space:nowrap;}
+  .bar-val.met{color:var(--rose);}
+  .bar-val.short{color:var(--gold);}
+  .bar-track{height:9px;background:var(--line);border-radius:99px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:99px;background:var(--rose);transition:width .55s cubic-bezier(.34,1.2,.64,1);}
+  .bar-fill.short{background:var(--gold-lt);}
+  .bar-note{font-size:13.5px;color:var(--ink-2);margin-top:5px;line-height:1.45;}
+
+  /* outings */
+  #outingList{margin-top:6px;}
+  .outing-toggle{
+    display:block;width:100%;margin:4px 0 6px;
+    border:0;background:var(--blush);color:var(--rose);cursor:pointer;
+    font-family:var(--ui);font-size:14px;font-weight:700;
+    padding:12px 14px;border-radius:14px;
+  }
+  .outing-toggle:active{background:var(--blush-2);}
+  .outing-toggle.subtle{
+    background:var(--card-2);color:var(--ink-2);
+    border:1.5px dashed var(--blush-2);
+  }
+  .outing{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:12px 0;border:0;border-top:1px solid var(--line);
+    background:none;font:inherit;color:inherit;border-radius:10px;
+  }
+  .outing-main{
+    flex:1;min-width:0;display:flex;align-items:center;gap:12px;
+    border:0;background:none;font:inherit;color:inherit;cursor:pointer;
+    text-align:left;padding:0;margin:0;
+  }
+  .outing-main:active{opacity:.85;}
+  .nights{
+    flex:0 0 auto;width:44px;height:44px;border-radius:14px;
+    background:var(--rose);color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    line-height:1;
+  }
+  .nights b{font-size:16px;font-weight:800;}
+  .nights span{font-size:8.5px;font-weight:700;letter-spacing:.06em;opacity:.85;margin-top:2px;}
+  .nights.day{background:var(--line);color:var(--ink-3);}
+  .nights.long{background:var(--gold-lt);color:#5C4200;}
+  .outing-body{flex:1;min-width:0;}
+  .outing-name{font-size:15.5px;font-weight:600;line-height:1.3;}
+  .outing-meta{font-size:13.5px;color:var(--ink-3);margin-top:2px;font-weight:500;}
+  .outing.planned{opacity:.55;}
+  .outing.row-hidden{opacity:.45;}
+  .chev{flex:0 0 auto;color:var(--blush-2);font-size:20px;font-weight:700;}
+  .hide-outing{
+    flex:0 0 auto;border:0;background:var(--line);color:var(--ink-2);
+    font-family:var(--ui);font-size:12px;font-weight:700;
+    padding:8px 10px;border-radius:12px;cursor:pointer;
+  }
+  .hide-outing:active{background:var(--blush);color:var(--rose);}
+  .outing.row-hidden .hide-outing{background:var(--blush);color:var(--rose);}
+
+  .add-btn{
+    width:100%;margin-top:14px;padding:15px;
+    border:2px dashed var(--blush-2);border-radius:16px;
+    background:none;color:var(--rose);cursor:pointer;
+    font-family:var(--ui);font-size:15px;font-weight:700;
+  }
+  .add-btn:active{background:var(--blush);}
+
+  .add-form{
+    background:var(--card-2);border-radius:16px;padding:16px;margin-top:14px;
+  }
+  .add-form input{
+    width:100%;padding:14px;margin-bottom:10px;
+    border:1.5px solid var(--line);border-radius:12px;
+    background:#fff;font-family:var(--ui);font-size:16px;color:var(--ink);
+  }
+  .add-form input:focus{outline:none;border-color:var(--rose-lt);}
+  .night-row{display:flex;align-items:center;justify-content:space-between;padding:6px 2px 12px;}
+  .night-lab{font-size:15px;font-weight:600;}
+  .stepper{display:flex;align-items:center;gap:8px;}
+  .stepper button{
+    width:44px;height:44px;border:0;border-radius:14px;
+    background:var(--blush);color:var(--rose);
+    font-size:22px;font-weight:700;cursor:pointer;line-height:1;
+  }
+  .stepper button:active{background:var(--blush-2);}
+  .night-n{font-size:19px;font-weight:800;min-width:34px;text-align:center;}
+  .toggles{display:flex;gap:9px;}
+  .toggle{
+    flex:1;padding:14px 6px;border:0;border-radius:14px;
+    background:var(--line);color:var(--ink-2);
+    font-family:var(--ui);font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .toggle[aria-pressed="true"]{background:var(--rose);color:#fff;}
+  #oPlanned[aria-pressed="true"]{background:var(--gold-lt);color:#5C4200;}
+  .form-actions{display:flex;gap:9px;margin-top:12px;}
+  .btn-ghost,.btn-solid,.btn-del{
+    padding:15px;border:0;border-radius:14px;cursor:pointer;
+    font-family:var(--ui);font-size:15px;font-weight:700;
+  }
+  .btn-ghost{flex:1;background:var(--line);color:var(--ink-2);}
+  .btn-solid{flex:1;background:var(--rose);color:#fff;}
+  .btn-del{background:var(--blush);color:var(--rose);}
+
+  /* ============ TABS ============ */
+  .prog-tabs{
+    display:flex;gap:7px;margin-bottom:16px;
+  }
+  .prog-tabs button{
+    flex:1;padding:12px 4px;border:0;border-radius:14px;
+    background:var(--card);color:var(--ink-2);cursor:pointer;
+    font-family:var(--ui);font-size:12.5px;font-weight:700;
+    box-shadow:0 1px 6px rgba(43,32,40,.05);
+  }
+  .prog-tabs button b{
+    display:block;font-size:18px;font-weight:800;margin-top:2px;
+  }
+  .prog-tabs button[aria-pressed="true"]{background:var(--rose);color:#fff;}
+  .prog-tabs button[data-f="ready"][aria-pressed="true"]{background:var(--gold-lt);color:#5C4200;}
+
+  .legend{
+    display:flex;gap:14px;flex-wrap:wrap;font-size:13px;font-weight:600;
+    color:var(--ink-2);margin:0 0 20px;padding:0 4px;
+  }
+  .legend span{display:flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;}
+  .dot.n{border:2px solid var(--blush-2);}
+  .dot.r{background:var(--gold-lt);}
+  .dot.d{background:var(--rose);}
+
+  /* ============ ACTS ============ */
+  .act-head{
+    display:flex;align-items:center;gap:12px;margin:26px 0 10px;
+  }
+  .act-head::before,.act-head::after{
+    content:"";flex:1;height:1.5px;background:var(--line);border-radius:2px;
+  }
+  .act-head span{
+    font-family:var(--disp);font-size:14px;font-weight:600;font-style:italic;
+    color:var(--rose);white-space:nowrap;
+  }
+
+  .cat{margin-bottom:8px;}
+  .cat-head{display:flex;align-items:center;gap:8px;padding:0 2px 4px;}
+  .cat-head h3{
+    font-family:var(--disp);font-size:23px;font-weight:700;
+    color:var(--ink);margin:0;letter-spacing:-.01em;
+  }
+  .cat-count{
+    margin-left:auto;font-size:13px;font-weight:800;
+    color:var(--ink-3);white-space:nowrap;
+    background:var(--card);padding:5px 10px;border-radius:99px;
+  }
+  .cat-count em{color:var(--gold);font-style:normal;}
+
+  /* ============ REQUIREMENT CARDS ============ */
+  .req{
+    display:flex;align-items:flex-start;gap:13px;width:100%;text-align:left;
+    padding:16px;margin-bottom:10px;
+    background:var(--card);border:0;border-radius:18px;
+    cursor:pointer;font:inherit;color:inherit;
+    box-shadow:0 2px 10px rgba(43,32,40,.055);
+    transition:transform .12s, box-shadow .12s;
+  }
+  .req:active{transform:scale(.985);}
+
+  .star-bullet{
+    flex:0 0 auto;width:30px;height:30px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;background:var(--line);color:var(--ink-3);
+    transition:background .2s, color .2s, transform .2s;
+  }
+  .req.done{background:var(--blush);}
+  .req.done .star-bullet{background:var(--rose);color:#fff;transform:scale(1.06);}
+  .req.done .req-txt{color:var(--ink-2);}
+  .req.ready{background:var(--gold-bg);box-shadow:0 2px 12px rgba(201,144,0,.18);}
+  .req.ready .star-bullet{background:var(--gold-lt);color:#5C4200;animation:beat 2s ease-in-out infinite;}
+  @keyframes beat{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+
+  .req-body{flex:1;min-width:0;}
+  .req-top{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+  .req-num{
+    font-size:12px;font-weight:800;color:var(--ink-3);
+    background:var(--bg);padding:3px 8px;border-radius:99px;
+  }
+  .req.done .req-num{background:rgba(255,255,255,.7);}
+
+  /* ============ ACT TILES GRID (map view) ============ */
+  .map-title{
+    font-family:var(--disp);font-size:22px;font-weight:700;
+    color:var(--ink);margin:8px 0 4px;text-align:center;
+  }
+  .map-sub{
+    font-size:14px;color:var(--ink-2);text-align:center;
+    margin:0 0 16px;font-weight:500;
+  }
+  .nextup{
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    padding:14px 16px;margin-bottom:16px;border:0;border-radius:18px;
+    background:var(--gold-bg);box-shadow:0 2px 12px rgba(201,144,0,.16);
+    cursor:pointer;font:inherit;color:inherit;
+  }
+  .nextup:active{transform:scale(.985);}
+  .nextup .ni{font-size:30px;flex:0 0 auto;line-height:1;}
+  .nextup .nt{flex:1;min-width:0;}
+  .nextup .nlab{
+    font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:4px;
+  }
+  .nextup .nmain{font-size:15.5px;font-weight:600;color:var(--ink);line-height:1.35;}
+  .nextup .go{font-size:13px;font-weight:800;color:var(--rose);flex:0 0 auto;}
+
+  .acts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .act-tile {
+    position: relative;
+    background: var(--card);
+    border-radius: 18px;
+    padding: 16px 12px 14px;
+    box-shadow: 0 2px 10px rgba(43,32,40,.06);
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 7px;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    width: 100%;
+  }
+  .act-tile:active {
+    transform: scale(0.97);
+  }
+  .act-tile .icon {
+    font-size: 34px;
+    line-height: 1;
+  }
+  .act-tile .title {
+    font-family: var(--disp);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  .act-tile .zbar{
+    width:100%;height:8px;background:var(--line);border-radius:99px;overflow:hidden;
+  }
+  .act-tile .zfill{
+    height:100%;background:var(--rose);border-radius:99px;
+    transition:width .45s cubic-bezier(.34,1.2,.64,1);
+  }
+  .act-tile .progress {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-2);
+  }
+  .act-tile .progress span {
+    color: var(--rose);
+    font-weight: 800;
+  }
+  .act-tile.clear{
+    background:var(--blush);
+    box-shadow:0 2px 12px rgba(194,24,91,.14);
+  }
+  .act-tile.clear .title,
+  .act-tile.clear .progress{color:var(--rose-dk);}
+  .act-tile.clear .zfill{background:var(--rose);}
+  .act-tile .badge-stamp{
+    position:absolute;top:8px;left:10px;font-size:14px;color:var(--rose);
+  }
+
+  /* zone detail view */
+  .backbtn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:12px 16px;margin-bottom:14px;border:0;border-radius:14px;
+    background:var(--card);color:var(--ink-2);cursor:pointer;
+    font-family:var(--ui);font-size:14px;font-weight:700;
+    box-shadow:0 1px 6px rgba(43,32,40,.06);
+  }
+  .backbtn:active{background:var(--blush);color:var(--rose);}
+  .zone-hero{
+    display:flex;align-items:center;gap:14px;
+    padding:16px;margin-bottom:16px;border-radius:20px;
+    background:var(--card);box-shadow:0 2px 14px rgba(43,32,40,.06);
+  }
+  .zone-hero .hi{font-size:42px;line-height:1;}
+  .zone-hero h2{
+    font-family:var(--disp);font-size:22px;font-weight:700;
+    color:var(--ink);margin:0 0 4px;
+  }
+  .zone-hero .hsub{font-size:14.5px;color:var(--ink-2);font-weight:500;}
+  .zone-clear-msg{
+    text-align:center;padding:18px 16px;margin-top:12px;border-radius:18px;
+    background:var(--blush);color:var(--rose-dk);
+    font-family:var(--disp);font-size:16px;font-weight:600;line-height:1.5;
+  }
+  .map-only.hidden,.zone-only.hidden{display:none;}
+  .tag{
+    font-size:11px;font-weight:800;letter-spacing:.03em;
+    padding:4px 9px;border-radius:99px;text-transform:uppercase;
+  }
+  .tag.ready{background:var(--gold-lt);color:#5C4200;}
+  .tag.kayak{background:#B2EBF2;color:#00636E;}
+  .tag.quick{background:var(--gold-lt);color:#5C4200;}
+  .tag.linked{background:var(--blush);color:var(--rose);}
+
+  .req-txt{font-size:16px;line-height:1.5;font-weight:500;color:var(--ink);}
+  .req-note{
+    font-size:14.5px;line-height:1.5;color:var(--ink-2);font-weight:500;
+    margin-top:9px;padding:10px 12px;
+    background:var(--bg);border-radius:12px;
+  }
+  .req.done .req-note,.req.ready .req-note{background:rgba(255,255,255,.6);}
+
+  .req.linked{cursor:default;}
+  .req.linked:active{transform:none;}
+
+  .empty-state{
+    text-align:center;padding:40px 20px;
+    font-family:var(--disp);font-size:19px;font-style:italic;
+    color:var(--ink-3);
+  }
+
+  /* ============ FOOTER ============ */
+  .foot{margin-top:34px;padding:24px 0 6px;text-align:center;}
+  .foot-rule{
+    font-size:12px;font-weight:700;letter-spacing:.08em;
+    color:var(--ink-3);margin-bottom:16px;
+  }
+  .foot-row{display:flex;gap:9px;max-width:340px;margin:0 auto 10px;}
+  .foot-btn{
+    flex:1;padding:15px 6px;border:0;border-radius:14px;
+    background:var(--card);color:var(--ink-2);cursor:pointer;
+    font-family:var(--ui);font-size:14px;font-weight:700;
+    box-shadow:0 1px 6px rgba(43,32,40,.05);
+  }
+  .foot-btn:active{background:var(--blush);color:var(--rose);}
+  .foot-btn.danger{color:var(--rose-lt);}
+  .saved{
+    font-size:14px;font-weight:700;color:var(--rose);
+    margin-top:12px;height:20px;opacity:0;transition:opacity .3s;
+  }
+  .saved.show{opacity:1;}
+  .hidden{display:none;}
+
+  .req.pop{
+    animation:reqPop .45s cubic-bezier(.34,1.2,.64,1);
+  }
+  @keyframes reqPop{
+    0%{transform:scale(1);}
+    40%{transform:scale(1.03);}
+    100%{transform:scale(1);}
+  }
+  .zone-hero.celebrate{
+    background:linear-gradient(135deg,#FFF4F6,#FCE4EC);
+    box-shadow:0 4px 20px rgba(194,24,91,.16);
+  }
+
+  /* ============ FITNESS TRACKER (8a / 8b) ============ */
+  .fit-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:18px 16px 16px;
+    margin:4px 0 16px;
+    box-shadow:0 2px 14px rgba(43,32,40,.06);
+  }
+  .fit-card h3{
+    font-family:var(--disp);font-size:18px;font-weight:700;
+    color:var(--ink);margin:0 0 6px;
+  }
+  .fit-hint{
+    font-size:14.5px;color:var(--ink-2);margin:0 0 14px;line-height:1.5;font-weight:500;
+  }
+  .fit-sect{
+    font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--rose);margin:18px 0 8px;padding-bottom:6px;
+    border-bottom:1.5px solid var(--line);
+  }
+  .fit-sect:first-of-type{margin-top:4px;}
+  .fit-date-row{
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;
+  }
+  .fit-date-row label{
+    font-size:14px;font-weight:700;color:var(--ink-2);
+  }
+  .fit-date-row input[type="date"]{
+    flex:1;min-width:160px;padding:12px 14px;border:1.5px solid var(--line);
+    border-radius:12px;background:#fff;font-family:var(--ui);font-size:16px;color:var(--ink);
+  }
+  .fit-date-row input:focus{outline:none;border-color:var(--rose-lt);}
+  .fit-win-info{
+    font-size:14.5px;color:var(--ink-2);margin:0 0 12px;line-height:1.45;font-weight:500;
+  }
+  .fit-win-info b{color:var(--rose);font-weight:800;}
+  .week-block{margin-bottom:14px;}
+  .week-head{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    margin-bottom:8px;
+  }
+  .week-head .wl{
+    font-size:14px;font-weight:700;color:var(--ink);
+  }
+  .week-head .wc{
+    font-size:13px;font-weight:800;padding:4px 10px;border-radius:99px;
+    background:var(--line);color:var(--ink-3);
+  }
+  .week-head .wc.met{background:var(--blush);color:var(--rose);}
+  .day-grid{
+    display:grid;grid-template-columns:repeat(7,1fr);gap:6px;
+  }
+  .day-sq{
+    background:var(--bg);border:0;border-radius:12px;cursor:pointer;
+    padding:8px 2px;font-family:var(--ui);font-size:11px;font-weight:600;
+    color:var(--ink-3);display:flex;flex-direction:column;align-items:center;gap:2px;
+    line-height:1.15;min-height:52px;
+  }
+  .day-sq .dnum{font-size:13px;font-weight:800;color:var(--ink-2);}
+  .day-sq.on{
+    background:var(--rose);color:#fff;
+  }
+  .day-sq.on .dnum{color:#fff;}
+  .day-sq.future{opacity:.35;cursor:not-allowed;}
+  .day-sq.today{box-shadow:inset 0 0 0 2px var(--gold-lt);}
+  .day-sq:active:not(.future){transform:scale(.96);}
+  .fit-summary{
+    text-align:center;font-size:14.5px;font-weight:600;color:var(--ink-2);
+    margin:4px 0 0;padding:12px;border-radius:14px;background:var(--card-2);
+  }
+  .fit-summary.win{
+    background:var(--blush);color:var(--rose-dk);
+  }
+  .fit-summary b{color:var(--rose);font-weight:800;}
+  .fit-ta{
+    width:100%;padding:14px;border:1.5px solid var(--line);border-radius:14px;
+    background:#fff;font-family:var(--ui);font-size:16px;color:var(--ink);
+    line-height:1.45;resize:vertical;min-height:88px;
+  }
+  .fit-ta:focus{outline:none;border-color:var(--rose-lt);}
+  .fit-ta + .fit-ta{margin-top:10px;}
+
+  @media (min-width:700px){
+    .wrap{max-width:720px;}
+    .cover h1{font-size:52px;}
+    .req-txt{font-size:17px;}
+    .acts-grid{grid-template-columns:repeat(3,1fr);gap:14px;}
+    .act-tile .icon{font-size:40px;}
+    .act-tile .title{font-size:16px;}
+    .day-grid{gap:8px;}
+    .day-sq{min-height:60px;font-size:12px;padding:10px 4px;}
+    .day-sq .dnum{font-size:15px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="wrap">
+    <p class="cover-top">New Ballet San Jose &middot; Troop 116</p>
+    <h1>Rosie</h1>
+    <p class="cover-sub">First Class &middot; Season 2026</p>
+    <div class="curtain-wrap">
+      <div class="curtain-label">
+        <span>Progress</span>
+        <span id="curtainNum">0 / 38</span>
+      </div>
+      <div class="curtain-track">
+        <div class="curtain-ghost" id="curtainGhost" style="width:0%"></div>
+        <div class="curtain-fill" id="curtainFill" style="width:0%"></div>
+      </div>
+      <p class="curtain-status" id="curtainStatus">Loading…</p>
+    </div>
+  </div>
+</div>
+
+<!-- Status card: Hi-Sierra by default; swaps to check-off feedback when Rosie marks progress -->
+<div class="credits-card" id="creditsCard" role="status" aria-live="polite">
+  <p class="credits-eyebrow" id="creditsEyebrow">Just back from Hi-Sierra</p>
+  <p class="credits-lead" id="creditsLead">Five new badges in one week</p>
+  <p class="credits-sub hidden" id="creditsSub"></p>
+  <div id="creditsHome">
+    <ul class="credits-badges">
+      <li>Wilderness Survival</li>
+      <li>Wood Carving</li>
+      <li>Small-Boat Sailing</li>
+      <li class="eagle">Sustainability &starf;</li>
+      <li class="eagle">First Aid &starf;</li>
+    </ul>
+    <p class="credits-note">16 badges total &middot; 20 nights camping &middot; more than a Scout needs for <b>Life</b> rank</p>
+  </div>
+</div>
+
+<div class="program-body wrap">
+
+  <!-- Program chrome: outings stay mounted so form handlers keep working -->
+  <div class="panel map-only" id="outingsPanel">
+    <h2>Your Outings</h2>
+    <p class="panel-hint">Requirement 1a. Progress counts every outing — even ones you hide from the list.</p>
+    <div id="counters"></div>
+    <button type="button" class="outing-toggle" id="outingsListToggle">Show list</button>
+    <div id="outingList"></div>
+    <button class="add-btn" id="addBtn">+ Add an outing</button>
+    <div class="add-form hidden" id="addForm">
+      <input type="text" id="oName" placeholder="What was it?" autocomplete="off">
+      <input type="text" id="oDate" placeholder="When? (e.g. Oct 2025)" autocomplete="off">
+      <div class="night-row">
+        <span class="night-lab">Nights slept out</span>
+        <div class="stepper">
+          <button type="button" id="nMinus" aria-label="Fewer nights">&minus;</button>
+          <span class="night-n" id="nVal">0</span>
+          <button type="button" id="nPlus" aria-label="More nights">+</button>
+        </div>
+      </div>
+      <div class="toggles">
+        <button type="button" class="toggle" id="oOutdoor" aria-pressed="false">Outdoors</button>
+        <button type="button" class="toggle" id="oPlanned" aria-pressed="false">Not yet</button>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-del hidden" id="delBtn">Remove</button>
+        <button type="button" class="btn-ghost" id="oCancel">Cancel</button>
+        <button type="button" class="btn-solid" id="oSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Swaps between program overview and act detail -->
+  <div id="view"></div>
+
+  <div class="foot">
+    <p class="foot-rule">Troop 116 &middot; Season 2026</p>
+    <div class="foot-row">
+      <button class="foot-btn" id="exportBtn">Save Backup</button>
+      <button class="foot-btn" id="importBtn">Load Backup</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" class="hidden">
+    <button class="foot-btn danger" id="reset">Start Over</button>
+    <p class="saved" id="saved">Saved</p>
+  </div>
+</div>
+
+<script>
+
+const CHECK_STAR = "✓";   // inside the filled circle
+const OPEN_STAR  = "";    // empty circle = not started
+
+const REQS = [
+  ["Camping & Outdoor Ethics", [
+    ["1b","Explain the potential impacts of camping on the environment and on other outdoor users. Explain why the Outdoor Code and Leave No Trace principles are important.","","kayak"],
+  ]],
+  ["Cooking", [
+    ["2a","Plan a campout menu: 1 breakfast, 1 lunch, 1 dinner — at least 2 cooked. Show how it meets MyPlate.","You did this for Bear Paw — heads up: the signed menu must be the one you cook for 2e. Simplest to re-plan fresh for the kayaking trip and chain 2a–2e off one campout.","kayak"],
+    ["2b","Build a budget and food list for that menu, feeding 3+ Scouts. Buy the ingredients.","Your troop runs about $10/Scout for a weekend campout. For 3 Scouts that's a $30 budget — write that down, then list ingredients and prices against it.","kayak"],
+    ["2c","Show which pans, utensils, and gear you need to cook and serve those meals.","","kayak"],
+    ["2d","Safely handle and store meat, dairy, eggs, and vegetables. Dispose of garbage and waste water properly.","You did this at Bear Paw. Get it signed off — it stands alone.","kayak"],
+    ["2e","Be the cook on a campout. Run your assistants, cook all three meals, supervise cleanup.","NOT met at Bear Paw — you cooked but didn't supervise anyone. That's the whole point: Second Class asked you to cook, First Class asks you to run the kitchen.","kayak"],
+  ]],
+  ["Tools", [
+    ["3a","Discuss when you should and shouldn't use lashings.","",""],
+    ["3b","Tie a timber hitch and a clove hitch.","",""],
+    ["3c","Tie square, shear, and diagonal lashings joining two or more poles.","",""],
+    ["3d","Use lashings to build a camp gadget or structure.","Idea: a portable ballet barre — two poles lashed horizontally between two uprights or two trees, at the right height for pliés. Real lashing practice under real load, and a great photo.","kayak"],
+  ]],
+  ["Navigation", [
+    ["4a","Complete a 1-mile orienteering course with map and compass, measuring height or width of designated items.","",""],
+    ["4b","Use GPS to find your location, pick a destination, plan the route, and follow it.","You have the Geocaching merit badge — you know this cold. Ask your Scoutmaster to sign it off.","quick"],
+  ]],
+  ["Nature", [
+    ["5a","Identify 10 native plants at your local area or campsite. Photos count.","Take them at the kayaking campsite. You have the Photography merit badge too.","kayak"],
+    ["5b","Name two ways to get a weather forecast and explain why they matter for planning.","Look them up for real before the kayaking trip.","kayak"],
+    ["5c","Describe 3 natural warning signs of bad weather, what could happen, and what to do.","",""],
+    ["5d","Describe extreme weather in your area, how to assess the risk, and how to prepare and respond.","",""],
+  ]],
+  ["Aquatics", [
+    ["6a","Pass the Scouting America swimmer test.","You may have already done this. Both your Kayaking and Small-Boat Sailing merit badges require the swimmer test — ask your Scoutmaster to sign it off.","quick"],
+    ["6b","Explain the precautions for a safe trip afloat.","Review it with a leader before you launch.","kayak"],
+    ["6c","Name the parts of a kayak or canoe, and the parts of a paddle.","You have the Kayaking merit badge — five-minute conversation.","quick"],
+    ["6d","Describe how to sit in a boat and why it matters.","Same — Kayaking merit badge covers this.","quick"],
+    ["6e","Do a line rescue as both tender and rescuer (victim ~30 ft from shore, deep water).","Ask if the kayaking trip can include rescue practice.","kayak"],
+  ]],
+  ["First Aid & Emergencies", [
+    ["7a","Bandage a sprained ankle, and injuries to the head, upper arm, and collarbone.","You have the First Aid merit badge — this should come back fast.","quick"],
+    ["7b","Carry someone out of a smoke-filled room. Move someone with a sprained ankle 25 yards.","",""],
+    ["7c","Name the 5 common signs of a heart attack. Explain CPR steps.","",""],
+    ["7d","Name the utilities in your home, their hazards, and what to do in an emergency.","",""],
+    ["7e","Write an emergency plan for your home: fire, storm, power outage, water outage.","A rainy-afternoon job. Do it at the kitchen table.",""],
+    ["7f","Explain how to get safe drinking water in an emergency.","You have Wilderness Survival — you already know this.","quick"],
+  ]],
+  ["Fitness", [
+    ["8a","30+ minutes of activity a day, 5 days a week, for 4 weeks. Keep track.","Four weeks of calendar time. Start it today.",""],
+    ["8b","Share what was hard and what went well. Set a goal to keep moving.","",""],
+  ]],
+  ["Citizenship", [
+    ["9a","Meet with an official — judge, elected official, teacher, or principal — and discuss the rights and duties of a citizen.","This one needs scheduling. Ask around at the court of honor.",""],
+    ["9b","Investigate a local environmental issue. Tell your patrol what you found and what could be done.","Your Sustainability merit badge gave you a head start.","quick"],
+    ["9c","Track the trash you make on one outing. On the next, cut it down. Compare.","Start the tracking half on the kayaking trip.","kayak"],
+    ["9d","3 hours of service — different projects from Tenderfoot 7b and Second Class 8e.","You did 4 hours at Hi-Sierra. As long as it's a different project, this is done — get it signed off.","quick"],
+  ]],
+  ["Leadership", [
+    ["10","Tell someone who could join Scouts BSA about what you do. Invite them to an event. Report back to your Scoutmaster.","A regular troop meeting is a better invite than a court of honor — games, skills, and people their age. A campout or the kayaking trip is even better if they’re ready for a bigger first look.",""],
+  ]],
+  ["Scout Spirit & Sign-Off", [
+    ["11","Show Scout spirit. Tell how you lived 4 points of the Scout Law — different points than Tenderfoot and Second Class.","Check your old rank sign-offs first so you don't repeat.",""],
+    ["12","Sit down for a Scoutmaster conference.","",""],
+    ["13","Pass your board of review for First Class. The curtain rises.","",""],
+  ]],
+];
+
+const TOTAL = REQS.reduce((n,[,items])=>n+items.length,0) + 1; // +1 for 1a (live)
+const KEY = "rosie_first_class_v8";
+
+const EVIDENCE = {
+  "4b":1,"6a":1,"6c":1,"6d":1,"7a":1,"7f":1,"9b":1,"9d":1,
+  "2a":1,"2d":1,
+};
+
+const SEED = [
+  {id:"c9",name:"Angel Island Bike Camping",        date:"May 18–19, 2024",  nights:1,outdoor:true, planned:false},
+  {id:"c8",name:"Beach Camping (troop)",            date:"May 31–Jun 2, 2024",nights:2,outdoor:true, planned:false},
+  {id:"c7",name:"Camp Hi-Sierra 2024",              date:"Jul 7–13, 2024",   nights:6,outdoor:true, planned:false},
+  {id:"c6",name:"Russian River Canoeing & Camping", date:"Aug 16–18, 2024",  nights:2,outdoor:true, planned:false},
+  {id:"c5",name:"Pinnacles Camping",                date:"Sep 20–22, 2024",  nights:2,outdoor:true, planned:false},
+  {id:"c4",name:"Fall Backpacking",                 date:"Oct 19–20, 2024",  nights:1,outdoor:true, planned:false},
+  {id:"c3",name:"Bear Paw Snow Camping",            date:"Feb 21–23, 2025",  nights:2,outdoor:true, planned:false},
+  {id:"c2",name:"Mt. Madonna Campout",              date:"Apr 25–27, 2025",  nights:2,outdoor:true, planned:false},
+  {id:"c1",name:"Camp Hi-Sierra 2026",              date:"Jul 5–11, 2026",   nights:6,outdoor:true, planned:false},
+  {id:"s2",name:"Court of Honor",                   date:"Upcoming",         nights:0,outdoor:false,planned:true},
+  {id:"s3",name:"Kayaking trip",                    date:"Upcoming",         nights:2,outdoor:true, planned:true},
+];
+
+function defaultFitness(){
+  return {
+    startDate:"",
+    active:{},           // iso date -> true (30+ min that day)
+    hard:"",             // 8b: what was hard
+    well:"",             // 8b: what went well
+    goal:"",             // 8b: goal to keep moving
+  };
+}
+
+let state = {
+  done:Object.assign({},EVIDENCE),
+  outings:SEED.slice(),
+  zone:null,
+  outingsListOpen:true, // show/hide the list of individual outings
+  fitness:defaultFitness(),
+  logOpen:false,
+};
+
+const $ = s => document.querySelector(s);
+const st = id => state.done[id] || 0;
+
+// storage — lazy detection, Claude or localStorage
+const hasClaudeStore = () =>
+  typeof window!=="undefined" && window.storage &&
+  typeof window.storage.get==="function";
+const store = {
+  get: async k => hasClaudeStore() ? window.storage.get(k,true)
+    : (v=>v==null?null:{key:k,value:v})(localStorage.getItem(k)),
+  set: async (k,v) => hasClaudeStore() ? window.storage.set(k,v,true)
+    : (localStorage.setItem(k,v), {key:k,value:v}),
+};
+
+async function load(){
+  try{
+    const r = await store.get(KEY);
+    if(r && r.value) state = Object.assign(state, JSON.parse(r.value));
+    state.zone = null; // always open on the map
+    // merge fitness defaults for older saves
+    state.fitness = Object.assign(defaultFitness(), state.fitness||{});
+    if(!state.fitness.active || typeof state.fitness.active!=="object")
+      state.fitness.active = {};
+  }catch(e){}
+  render();
+}
+
+let saveTimer;
+async function save(){
+  try{
+    const r = await store.set(KEY, JSON.stringify(state));
+    if(!r) throw new Error("fail");
+    const s=$("#saved"); s.textContent="Saved";
+    s.classList.add("show"); clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>s.classList.remove("show"),1400);
+  }catch(e){
+    const s=$("#saved");
+    s.textContent="Not saving here — use Save Backup below";
+    s.classList.add("show");
+  }
+}
+
+const LONG = 5;
+function stats(){
+  const real = state.outings.filter(o=>!o.planned);
+  const shortN = real.filter(o=>o.nights>0&&o.nights<LONG).reduce((s,o)=>s+o.nights,0);
+  const longs  = real.filter(o=>o.nights>=LONG).map(o=>o.nights).sort((a,b)=>b-a);
+  const longN  = longs.length ? Math.min(6,longs[0])+2*(longs.length-1) : 0;
+  return {
+    activities: real.length,
+    outdoor:    real.filter(o=>o.outdoor).length,
+    overnight:  real.filter(o=>o.nights>0).length,
+    nights:     shortN+longN,
+    rawNights:  real.reduce((s,o)=>s+o.nights,0),
+    longs:      longs.length,
+  };
+}
+
+function req1aState(){
+  const s=stats();
+  return (s.activities>=10&&s.outdoor>=6&&s.overnight>=3)?2:0;
+}
+
+function signedCount(){
+  return Object.values(state.done).filter(v=>v===2).length+(req1aState()===2?1:0);
+}
+function readyCount(){ return Object.values(state.done).filter(v=>v===1).length; }
+
+function renderCover(){
+  const signed=signedCount(), ready=readyCount();
+  const C=100;
+  $("#curtainFill").style.width  = (signed/TOTAL*C).toFixed(1)+"%";
+  $("#curtainGhost").style.width = ((signed+ready)/TOTAL*C).toFixed(1)+"%";
+  $("#curtainNum").textContent   = signed+" / "+TOTAL;
+  const left=TOTAL-signed-ready;
+  if(ready>0){
+    $("#curtainStatus").textContent = ready+" ready to sign off · "+left+" still to do";
+  } else if(left===0){
+    $("#curtainStatus").textContent = "Curtain call — board of review time!";
+  } else {
+    $("#curtainStatus").textContent =
+      Math.round(signed/TOTAL*100)+"% to First Class · "+left+" remaining";
+  }
+}
+
+const NEEDS=[
+  {key:"activities",label:"Activities",           sub:"any troop outing",    need:10},
+  {key:"outdoor",   label:"Held outdoors",        sub:"",                    need:6},
+  {key:"overnight", label:"Overnight camping",    sub:"",                    need:3},
+  {key:"nights",    label:"Camping nights",       sub:"Camping merit badge", need:20},
+];
+function renderBars(){
+  const t=stats();
+  $("#counters").innerHTML=NEEDS.map(o=>{
+    const have=t[o.key],met=have>=o.need,pct=Math.min(100,(have/o.need)*100).toFixed(1);
+    return `<div class="bar">
+      <div class="bar-top">
+        <span class="bar-lab">${o.label}${o.sub?` <small>· ${o.sub}</small>`:""}</span>
+        <span class="bar-val ${met?"met":"short"}">${have} / ${o.need}${met?" ✦":""}</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill ${met?"":"short"}" style="width:${pct}%"></div></div>
+      ${o.key==="nights"&&t.longs>1?`<div class="bar-note">Slept ${t.rawNights} nights total; ${t.longs} long-term camps — best counts 6, each extra counts 2.</div>`:""}
+    </div>`;
+  }).join("");
+}
+
+function renderOutings(){
+  const box=$("#outingList");
+  const toggle=$("#outingsListToggle");
+  const open=state.outingsListOpen!==false;
+  const sorted=state.outings.slice().sort((a,b)=>(a.planned?1:0)-(b.planned?1:0));
+  const visible=sorted.filter(o=>!o.hidden);
+  const hiddenN=sorted.length-visible.length;
+
+  if(toggle){
+    toggle.classList.toggle("subtle", open);
+    if(!open){
+      toggle.textContent = sorted.length
+        ? `Show list (${sorted.length} outing${sorted.length===1?"":"s"})`
+        : "Show list";
+    } else {
+      toggle.textContent = "Hide list";
+    }
+  }
+
+  // list lives under the toggle (which sits under the progress bars)
+  box.innerHTML="";
+  if(!open){
+    let note=`List hidden — progress bars still count all outings.`;
+    if(hiddenN) note+=` (${hiddenN} also marked hidden.)`;
+    box.innerHTML=`<p class="panel-hint" style="margin-top:2px">${note}</p>`;
+    return;
+  }
+  if(!sorted.length){
+    box.innerHTML='<p class="panel-hint" style="margin-top:8px">No outings yet — add them below.</p>';
+    return;
+  }
+
+  // show visible first; if any are hidden, offer a way to see them
+  const showHidden=state.showHiddenOutings===true;
+  const rows=showHidden?sorted:visible;
+
+  if(!rows.length && hiddenN){
+    box.innerHTML=`<p class="panel-hint" style="margin-top:8px">All ${hiddenN} outings are hidden from the list (they still count).</p>`;
+  }
+
+  rows.forEach(o=>{
+    const row=document.createElement("div");
+    row.className="outing"+(o.planned?" planned":"")+(o.hidden?" row-hidden":"");
+    const cls=o.nights===0?"day":o.nights>=LONG?"long":"";
+    const badge=o.nights===0
+      ?`<div class="nights day"><b>—</b><span>DAY</span></div>`
+      :`<div class="nights ${cls}"><b>${o.nights}</b><span>${o.nights===1?"NIGHT":"NIGHTS"}</span></div>`;
+    const bits=[o.date];
+    if(o.planned) bits.push("not yet");
+    if(o.nights>=LONG) bits.push("long-term");
+    if(!o.outdoor&&o.nights===0) bits.push("indoor");
+    if(o.hidden) bits.push("hidden from list");
+
+    const main=document.createElement("button");
+    main.type="button";
+    main.className="outing-main";
+    main.innerHTML=`${badge}
+      <span class="outing-body">
+        <span class="outing-name">${o.name}</span>
+        <span class="outing-meta">${bits.filter(Boolean).join(" · ")}</span>
+      </span>
+      <span class="chev">›</span>`;
+    main.onclick=()=>openForm(o.id);
+
+    const hideBtn=document.createElement("button");
+    hideBtn.type="button";
+    hideBtn.className="hide-outing";
+    hideBtn.textContent=o.hidden?"Unhide":"Hide";
+    hideBtn.setAttribute("aria-label", o.hidden?`Unhide ${o.name}`:`Hide ${o.name}`);
+    hideBtn.onclick=e=>{
+      e.stopPropagation();
+      o.hidden=!o.hidden;
+      render();save();
+    };
+
+    row.appendChild(main);
+    row.appendChild(hideBtn);
+    box.appendChild(row);
+  });
+
+  if(hiddenN){
+    const more=document.createElement("button");
+    more.type="button";
+    more.className="outing-toggle";
+    more.style.marginTop="12px";
+    more.textContent=showHidden
+      ? `Hide ${hiddenN} hidden outing${hiddenN===1?"":"s"}`
+      : `Show ${hiddenN} hidden outing${hiddenN===1?"":"s"}`;
+    more.onclick=()=>{ state.showHiddenOutings=!showHidden; render(); save(); };
+    box.appendChild(more);
+  }
+}
+
+// outing form
+const draft={nights:0,outdoor:false,planned:false};
+let editing=null;
+
+function syncDraft(){
+  $("#nVal").textContent=draft.nights;
+  $("#oOutdoor").setAttribute("aria-pressed",draft.outdoor);
+  $("#oPlanned").setAttribute("aria-pressed",draft.planned);
+}
+function openForm(id){
+  editing=id||null;
+  const o=id?state.outings.find(x=>x.id===id):null;
+  $("#oName").value=o?o.name:"";
+  $("#oDate").value=o?o.date:"";
+  draft.nights=o?o.nights:0;
+  draft.outdoor=o?o.outdoor:true;
+  draft.planned=o?o.planned:false;
+  syncDraft();
+  $("#oSave").textContent=o?"Save changes":"Add it";
+  $("#delBtn").classList.toggle("hidden",!o);
+  $("#addForm").classList.remove("hidden");
+  $("#addBtn").classList.add("hidden");
+  if(!o) $("#oName").focus();
+}
+function closeForm(){
+  editing=null;
+  $("#addForm").classList.add("hidden");
+  $("#addBtn").classList.remove("hidden");
+}
+
+$("#nMinus").onclick=()=>{draft.nights=Math.max(0,draft.nights-1);syncDraft();};
+$("#nPlus").onclick=()=>{draft.nights++;if(draft.nights)draft.outdoor=true;syncDraft();};
+$("#oOutdoor").onclick=()=>{draft.outdoor=!draft.outdoor;syncDraft();};
+$("#oPlanned").onclick=()=>{draft.planned=!draft.planned;syncDraft();};
+$("#addBtn").onclick=()=>openForm(null);
+$("#oCancel").onclick=closeForm;
+$("#oSave").onclick=()=>{
+  const name=$("#oName").value.trim();
+  if(!name){$("#oName").focus();return;}
+  const data={name,date:$("#oDate").value.trim(),nights:draft.nights,outdoor:draft.outdoor,planned:draft.planned};
+  if(editing) Object.assign(state.outings.find(o=>o.id===editing),data);
+  else state.outings.unshift(Object.assign({id:"o"+Date.now(),hidden:false},data));
+  closeForm();render();save();
+};
+$("#delBtn").onclick=()=>{
+  state.outings=state.outings.filter(o=>o.id!==editing);
+  closeForm();render();save();
+};
+$("#outingsListToggle").onclick=()=>{
+  state.outingsListOpen = state.outingsListOpen === false; // flip; default is true
+  render();save();
+};
+// logPanel not used in this design — keeping for compatibility
+
+
+function render1a(){
+  const s=req1aState(), done=s===2;
+  const st2=stats();
+  const line=`${st2.activities}/10 activities · ${st2.outdoor}/6 outdoors · ${st2.overnight}/3 overnight`;
+  return `<div class="req linked ${done?"done":""}">
+    <span class="star-bullet">${done?CHECK_STAR:OPEN_STAR}</span>
+    <span class="req-body">
+      <span class="req-top"><span class="req-num">1a</span><span class="tag linked">Tracked from Outings</span></span>
+      <span class="req-txt">10 troop/patrol activities — 6+ outdoors, 3+ with overnight camping. Pitch your own tent.</span>
+      <span class="req-note">${done?"Complete — all three targets met.":"Currently "+line+". Add outings under Your Outings and this completes itself."}</span>
+    </span>
+  </div>`;
+}
+
+// Acts on the program overview
+const ACTS = [
+  { id:0,  icon:"🏕️", short:"Camping",    label:"Camping & Outdoor Ethics", act:"Act I" },
+  { id:1,  icon:"🍳", short:"Cooking",    label:"Cooking",                   act:"Act II" },
+  { id:2,  icon:"🪵", short:"Tools",      label:"Tools",                     act:"Act III" },
+  { id:3,  icon:"🧭", short:"Navigate",   label:"Navigation",                act:"Act IV" },
+  { id:4,  icon:"🌿", short:"Nature",     label:"Nature",                    act:"Act V" },
+  { id:5,  icon:"🛶", short:"Aquatics",   label:"Aquatics",                  act:"Act VI" },
+  { id:6,  icon:"🩹", short:"First Aid",  label:"First Aid & Emergencies",   act:"Act VII" },
+  { id:7,  icon:"🏃", short:"Fitness",    label:"Fitness",                   act:"Act VIII" },
+  { id:8,  icon:"🤝", short:"Citizen",    label:"Citizenship",               act:"Act IX" },
+  { id:9,  icon:"🗣️", short:"Lead",       label:"Leadership",                act:"Act X" },
+  { id:10, icon:"✨", short:"Spirit",     label:"Scout Spirit & Sign-Off",   act:"Finale" },
+];
+
+function actStats(index){
+  if(index===0){
+    const items=REQS[0][1];
+    return {
+      done: items.filter(([id])=>st(id)===2).length + (req1aState()===2?1:0),
+      ready: items.filter(([id])=>st(id)===1).length,
+      total: items.length + 1,
+    };
+  }
+  const items=REQS[index][1];
+  return {
+    done: items.filter(([id])=>st(id)===2).length,
+    ready: items.filter(([id])=>st(id)===1).length,
+    total: items.length,
+  };
+}
+const actClear = i => { const s=actStats(i); return s.done===s.total; };
+
+// nearest incomplete act — games always surface this
+function nearestAct(){
+  const open = ACTS.filter(a => !actClear(a.id));
+  if(!open.length) return null;
+  open.sort((a,b)=>{
+    const sa=actStats(a.id), sb=actStats(b.id);
+    return (sa.total-sa.done) - (sb.total-sb.done) || sb.done - sa.done;
+  });
+  return open[0];
+}
+
+function setMapChrome(show){
+  document.querySelectorAll(".map-only").forEach(el=>{
+    el.classList.toggle("hidden", !show);
+  });
+}
+
+function renderMap(){
+  setMapChrome(true);
+  const v=$("#view");
+  let html = `
+    <p class="map-title">Your Acts</p>
+    <p class="map-sub">Tap an act to open its requirements</p>
+    <p class="legend" style="justify-content:center;margin-bottom:14px">
+      <span><i class="dot n"></i>Not started</span>
+      <span><i class="dot r"></i>Needs a signature</span>
+      <span><i class="dot d"></i>Signed off</span>
+    </p>`;
+
+  const near = nearestAct();
+  if(near){
+    const left = actStats(near.id).total - actStats(near.id).done;
+    html += `<button class="nextup" data-goto="${near.id}">
+      <span class="ni">${near.icon}</span>
+      <span class="nt">
+        <span class="nlab">Closest to finish</span>
+        <span class="nmain">${near.label} — ${left} left</span>
+      </span>
+      <span class="go">Open ▸</span>
+    </button>`;
+  } else {
+    html += `<p class="zone-clear-msg">Curtain call — every act is clear. Board of review time!</p>`;
+  }
+
+  html += `<div class="acts-grid">`;
+  ACTS.forEach(a=>{
+    const s=actStats(a.id);
+    const clear=s.done===s.total;
+    const pct = s.total ? (s.done/s.total*100).toFixed(1) : 0;
+    // "ready" = marked done by Rosie, waiting on an adult signature
+    const readyNote = s.ready
+      ? ` · ${s.ready} need${s.ready===1?"":"s"} signature`
+      : "";
+    html += `<button class="act-tile ${clear?"clear":""}" data-goto="${a.id}">
+      ${clear?'<span class="badge-stamp">✦</span>':""}
+      <span class="icon">${a.icon}</span>
+      <span class="title">${a.short}</span>
+      <span class="zbar"><span class="zfill" style="width:${pct}%"></span></span>
+      <span class="progress"><span>${s.done}</span>/${s.total}${clear?" ✓":readyNote}</span>
+    </button>`;
+  });
+  html += `</div>`;
+
+  v.innerHTML = html;
+  v.querySelectorAll("[data-goto]").forEach(b=>{
+    b.onclick=()=>{ state.zone = +b.dataset.goto; render(); save(); };
+  });
+}
+
+const CHEERS_READY = [
+  "Nice work — ready for a signature!",
+  "You did it! Ask a leader to sign this off.",
+  "Brava! One signature away from done.",
+  "That's a wrap on this one — get it signed.",
+];
+const CHEERS_DONE = [
+  "Signed off! Curtain rises a little higher.",
+  "Check! That one is in the books.",
+  "Beautiful — officially done.",
+  "Yes! Another step toward First Class.",
+];
+const CHEERS_ACT = [
+  "Act cleared! Take a bow.",
+  "Whole act finished — encore!",
+  "You cleared this act. On to the next!",
+];
+
+const CREDITS_HOME = {
+  eyebrow: "Just back from Hi-Sierra",
+  lead: "Five new badges in one week",
+};
+
+let cheerTimer;
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+// Feedback lives in the Hi-Sierra credits card (not a floating toast)
+function cheer(title, sub, kind){
+  const card=$("#creditsCard");
+  const eye=$("#creditsEyebrow");
+  const lead=$("#creditsLead");
+  const subEl=$("#creditsSub");
+  const home=$("#creditsHome");
+  if(!card||!eye||!lead) return;
+
+  eye.textContent = kind==="act" ? "Curtain call"
+                  : kind==="done" ? "Signed off"
+                  : kind==="ready" ? "Ready to sign"
+                  : "Nice work";
+  lead.textContent = title;
+  if(subEl){
+    if(sub){
+      subEl.textContent = sub;
+      subEl.classList.remove("hidden");
+    } else {
+      subEl.textContent = "";
+      subEl.classList.add("hidden");
+    }
+  }
+  if(home) home.classList.add("hidden");
+  card.classList.remove("live");
+  // re-trigger pulse
+  void card.offsetWidth;
+  card.classList.add("live");
+
+  clearTimeout(cheerTimer);
+  cheerTimer = setTimeout(restoreCredits, 4200);
+}
+
+function restoreCredits(){
+  const card=$("#creditsCard");
+  const eye=$("#creditsEyebrow");
+  const lead=$("#creditsLead");
+  const subEl=$("#creditsSub");
+  const home=$("#creditsHome");
+  if(eye) eye.textContent = CREDITS_HOME.eyebrow;
+  if(lead) lead.textContent = CREDITS_HOME.lead;
+  if(subEl){ subEl.textContent=""; subEl.classList.add("hidden"); }
+  if(home) home.classList.remove("hidden");
+  if(card) card.classList.remove("live");
+}
+
+function onReqToggle(id){
+  const before=st(id);
+  const after=(before+1)%3;
+  const a = ACTS.find(x=>x.id===state.zone);
+  const clearedBefore = a ? actClear(a.id) : false;
+
+  state.done[id]=after;
+  const clearedAfter = a ? actClear(a.id) : false;
+
+  render();
+  save();
+
+  // celebrate after paint so we can pulse the card
+  const afterPaint = typeof requestAnimationFrame==="function"
+    ? requestAnimationFrame
+    : fn => setTimeout(fn, 0);
+  afterPaint(()=>{
+    const card=document.querySelector(`[data-req="${id}"]`);
+    if(card) card.classList.add("pop");
+
+    if(after===1){
+      cheer(pick(CHEERS_READY), `${id} is waiting on a leader signature`, "ready");
+    } else if(after===2){
+      if(a && !clearedBefore && clearedAfter){
+        cheer(pick(CHEERS_ACT), a.label, "act");
+      } else {
+        const left = TOTAL - signedCount();
+        cheer(
+          pick(CHEERS_DONE),
+          left>0 ? `${left} left to First Class` : "That's everything — board of review!",
+          "done"
+        );
+      }
+    } else {
+      // un-checked — go back to Hi-Sierra
+      clearTimeout(cheerTimer);
+      restoreCredits();
+    }
+  });
+}
+
+function renderZone(){
+  const a = ACTS.find(x=>x.id===state.zone);
+  if(!a){ state.zone=null; return renderMap(); }
+
+  setMapChrome(false);
+  const v=$("#view");
+  const s=actStats(a.id);
+  const clear=s.done===s.total;
+
+  let html = `<button class="backbtn" id="back">◂ All Acts</button>
+    <div class="zone-hero${clear?" celebrate":""}">
+      <span class="hi">${a.icon}</span>
+      <span>
+        <h2>${a.label}</h2>
+        <span class="hsub">${a.act} · ${s.done}/${s.total} signed off${s.ready?` · ${s.ready} waiting on signature`:""}</span>
+      </span>
+    </div>`;
+
+  // Camping act includes live 1a from outings
+  if(a.id===0) html += render1a();
+
+  const items = REQS[a.id][1];
+  items.forEach(([id,text,note,tag])=>{
+    html += reqHTML(id,text,note,tag);
+  });
+
+  // Fitness act: interactive 4-week tracker for 8a + notes for 8b
+  if(a.id===7) html += fitnessHTML();
+
+  if(clear){
+    html += `<p class="zone-clear-msg">✦ Act cleared ✦<br>${a.label}<br><span style="font-family:var(--ui);font-size:14px;font-style:normal;font-weight:600">Every requirement here is signed off.</span></p>`;
+  }
+
+  v.innerHTML = html;
+  $("#back").onclick=()=>{ state.zone=null; render(); save(); };
+  v.querySelectorAll("[data-req]").forEach(b=>{
+    b.onclick=()=>onReqToggle(b.dataset.req);
+  });
+  if(a.id===7) wireFitness();
+}
+
+/* ---------- Fitness tracker (First Class 8a / 8b) ---------- */
+const isoOf = d => d.toISOString().slice(0,10);
+function addDays(iso,n){
+  const d=new Date(iso+"T12:00:00");
+  d.setDate(d.getDate()+n);
+  return isoOf(d);
+}
+function prettyDate(iso){
+  return new Date(iso+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
+function weekDayName(iso){
+  return new Date(iso+"T12:00:00").toLocaleDateString(undefined,{weekday:"short"});
+}
+
+function fitnessWeeks(){
+  const f=state.fitness;
+  if(!f.startDate) return null;
+  const weeks=[];
+  for(let w=0;w<4;w++){
+    const days=[];
+    let count=0;
+    for(let d=0;d<7;d++){
+      const iso=addDays(f.startDate, w*7+d);
+      const on=!!f.active[iso];
+      if(on) count++;
+      days.push({iso,on,n:w*7+d+1});
+    }
+    weeks.push({n:w+1, days, count, met:count>=5});
+  }
+  return weeks;
+}
+
+function fitnessHTML(){
+  ensureFitness();
+  const f=state.fitness;
+  const today=isoOf(new Date());
+  const weeks=fitnessWeeks();
+
+  let weekHtml="";
+  if(weeks){
+    weeks.forEach(w=>{
+      const cells=w.days.map(day=>{
+        const future=day.iso>today;
+        const isToday=day.iso===today;
+        return `<button type="button" class="day-sq ${day.on?"on":""} ${future?"future":""} ${isToday?"today":""}"
+          ${future?"":`data-day="${day.iso}"`}
+          title="${prettyDate(day.iso)}${day.on?" · active":""}">
+          <span class="dnum">${day.n}</span>
+          <span>${weekDayName(day.iso)}</span>
+        </button>`;
+      }).join("");
+      weekHtml+=`<div class="week-block">
+        <div class="week-head">
+          <span class="wl">Week ${w.n}</span>
+          <span class="wc ${w.met?"met":""}">${w.count}/5 days${w.met?" ✦":""}</span>
+        </div>
+        <div class="day-grid">${cells}</div>
+      </div>`;
+    });
+  }
+
+  let winInfo, summary;
+  if(!f.startDate){
+    winInfo=`<p class="fit-win-info">Pick <b>Day 1</b> — then tap each day you did 30+ minutes of activity (ballet, run, hike, practice…).</p>`;
+    summary=`<p class="fit-summary">Need <b>5 active days</b> in each of <b>4 weeks</b>.</p>`;
+  } else {
+    const end=addDays(f.startDate,27);
+    const metWeeks=weeks.filter(w=>w.met).length;
+    const totalActive=weeks.reduce((n,w)=>n+w.count,0);
+    const dayNum=Math.min(28,Math.max(0,
+      Math.round((new Date(today+"T12:00:00")-new Date(f.startDate+"T12:00:00"))/86400000)+1));
+    const done28=today>=end;
+    winInfo=`<p class="fit-win-info">${prettyDate(f.startDate)} → ${prettyDate(end)}
+      &middot; ${done28?"<b>4 weeks complete</b>":`Day <b>${Math.max(1,dayNum)}</b> of 28`}</p>`;
+    if(metWeeks===4){
+      summary=`<p class="fit-summary win">✦ 8a looks ready — all 4 weeks hit 5+ days (${totalActive} active days total). Ask a leader to sign it!</p>`;
+    } else {
+      summary=`<p class="fit-summary"><b>${metWeeks}/4</b> weeks at 5+ days &middot; <b>${totalActive}</b> active days so far</p>`;
+    }
+  }
+
+  return `<div class="fit-card">
+    <h3>🏃 Fitness log</h3>
+    <p class="fit-hint">Requirement <b>8a</b>: 30+ minutes a day, <b>5 days a week</b>, for <b>4 weeks</b>. Rest days are fine — just hit five active days each week.</p>
+
+    <p class="fit-sect">1 · Start date</p>
+    <div class="fit-date-row">
+      <label>Day 1 =</label>
+      <input type="date" id="fitStart" value="${f.startDate||""}">
+    </div>
+    ${winInfo}
+
+    <p class="fit-sect">2 · Tap active days</p>
+    ${weeks?weekHtml:'<p class="fit-win-info">Calendar appears after you pick a start date.</p>'}
+    ${summary}
+
+    <p class="fit-sect">3 · Reflect (8b)</p>
+    <p class="fit-hint" style="margin-top:0">What was hard, what went well, and a goal to keep moving — talk this over with a leader.</p>
+    <textarea class="fit-ta" id="fitHard" rows="2" placeholder="What was hard?">${esc(f.hard||"")}</textarea>
+    <textarea class="fit-ta" id="fitWell" rows="2" placeholder="What went well?">${esc(f.well||"")}</textarea>
+    <textarea class="fit-ta" id="fitGoal" rows="2" placeholder="My goal to keep moving…">${esc(f.goal||"")}</textarea>
+  </div>`;
+}
+
+function esc(s){
+  return String(s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function ensureFitness(){
+  if(!state.fitness) state.fitness=defaultFitness();
+  if(!state.fitness.active) state.fitness.active={};
+}
+
+function wireFitness(){
+  ensureFitness();
+  const sd=$("#fitStart");
+  if(sd) sd.onchange=e=>{
+    state.fitness.startDate=e.target.value;
+    render(); save();
+  };
+  const bindTa=(id,key)=>{
+    const el=$(id);
+    if(!el) return;
+    el.oninput=()=>{ state.fitness[key]=el.value; };
+    el.onchange=()=>save();
+  };
+  bindTa("#fitHard","hard");
+  bindTa("#fitWell","well");
+  bindTa("#fitGoal","goal");
+
+  document.querySelectorAll("[data-day]").forEach(sq=>{
+    sq.onclick=()=>{
+      const d=sq.dataset.day;
+      const before=fitnessWeeks();
+      if(state.fitness.active[d]) delete state.fitness.active[d];
+      else state.fitness.active[d]=true;
+      render(); save();
+      const after=fitnessWeeks();
+      if(before && after){
+        if(after.every(w=>w.met) && !before.every(w=>w.met)){
+          cheer("Four weeks done!", "8a is ready to sign off", "act");
+        } else {
+          for(let i=0;i<4;i++){
+            if(!before[i].met && after[i].met){
+              cheer(`Week ${after[i].n} complete!`, "5 active days — keep going", "done");
+              break;
+            }
+          }
+        }
+      }
+    };
+  });
+}
+
+function reqHTML(id,text,note,tag){
+  const s=st(id);
+  const bullet=s===2?"✓":s===1?"★":"";
+  const tagHtml=s===1?'<span class="tag ready">Needs a signature</span>'
+               :tag==="kayak"?'<span class="tag kayak">Kayaking trip</span>'
+               :tag==="quick"?'<span class="tag quick">Quick win</span>':"";
+  return `<button class="req ${s===2?"done":s===1?"ready":""}" data-req="${id}">
+    <span class="star-bullet">${bullet}</span>
+    <span class="req-body">
+      <span class="req-top"><span class="req-num">${id}</span>${tagHtml}</span>
+      <span class="req-txt">${text}</span>
+      ${note?`<span class="req-note">${note}</span>`:""}
+    </span>
+  </button>`;
+}
+
+function render(){
+  renderCover();
+  // outings only matter on the map; still refresh when visible
+  if(state.zone==null){
+    renderBars();
+    renderOutings();
+    renderMap();
+  } else {
+    renderZone();
+  }
+  $("#logPanel").classList.toggle("hidden",!state.logOpen);
+}
+
+$("#reset").onclick=()=>{
+  state.done=Object.assign({},EVIDENCE);
+  state.outings=SEED.slice();
+  state.zone=null;
+  state.outingsListOpen=true;
+  state.showHiddenOutings=false;
+  state.fitness=defaultFitness();
+  render();save();
+};
+
+function download(fn,txt){
+  const b=new Blob([txt],{type:"application/json"});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement("a");
+  a.href=u;a.download=fn;document.body.appendChild(a);a.click();a.remove();
+  URL.revokeObjectURL(u);
+}
+$("#exportBtn").onclick=()=>
+  download(`rosie-firstclass-${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(state,null,2));
+$("#importBtn").onclick=()=>$("#importFile").click();
+$("#importFile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const l=JSON.parse(rd.result);
+      if(!l.done)throw new Error("bad");
+      state=Object.assign(state,l);state.zone=null;
+      render();save();
+    }catch(err){
+      const s=$("#saved");s.textContent="Not a valid backup";s.classList.add("show");
+    }
+  };
+  rd.readAsText(f);e.target.value="";
+};
+
+document.body.insertAdjacentHTML("beforeend",'<div id="logPanel" class="hidden"></div>');
+
+load();
+</script>
+</body>
+</html>
